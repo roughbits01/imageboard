@@ -1,0 +1,4 @@
+<span tabindex="0">
+  <span ng-repeat-start="r in range track by $index" class="sr-only">({{ $index < rate ? '*' : ' ' }})</span>
+  <i ng-repeat-end ng-click="update($index + 1)" class="fa" ng-class="$index < rate ? 'fa-star' : 'fa-star-o'"></i>
+</span>
