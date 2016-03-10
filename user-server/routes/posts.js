@@ -1,4 +1,5 @@
-var User = require('../models/post');
+var Thread = require('../models/thread');
+var Post = require('../models/post');
 var express = require('express');
 var router = express.Router();
 
@@ -11,27 +12,39 @@ var router = express.Router();
 //POST /posts/:id/report
 //POST /posts/:id/hide
 
-router.route('/')
+router.route('/:id')
 .get(function(req, res) {
-  if (req.query.sort) {
+  Post.findById(req.params.id, function(err, post) {
+    if (err) return res.status(500).json({ message : 'Internal Server Error' });
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    res.json(post);
+  });
+})
+.put(function(req, res) {
+  var updates = {};
+  if (req.body.text) updates.text = req.body.text;
+  if (req.body.image) updates.image = req.body.image;
 
-  }
-  if (req.query.fields) {
-
-  }
-  if (req.query.q) {
-
-  }
-  if (req.query.q) {
-
-  }
-  User.find().sort('-created').limit(50).exec(function(err, users) {
+  Post.findByIdAndUpdate(req.params.id, updates, { new : true }, function(err, post) {
     if (err) {
-      return res.status(500).json({ message : 'Users could not be retrieved from database. Please try again.' });
+      console.log(err);
+      return res.status(500).json({ message : 'Internal Server Error' });
     }
-    res.json(users);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    res.json(post);
+  });
+})
+.delete(function(req, res) {
+  Post.findByIdAndRemove(req.params.id, function(err, post) {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message : 'Internal Server Error' });
+    }
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    res.status(204).json();
   });
 });
+
 
 
 module.exports = router;

@@ -1,4 +1,6 @@
-var User = require('../models/post');
+var Board = require('../models/board');
+var Thread = require('../models/thread');
+var Post = require('../models/post');
 var express = require('express');
 var router = express.Router();
 
@@ -17,7 +19,7 @@ router.route('/')
 .get(function(req, res) {
   Thread.find().exec(function(err, threads) {
     if (err) {
-      return res.status(500).json({ message : 'Threads could not be retrieved from database. Please try again.' });
+      return res.status(500).json({ message : 'Threads could not be retrieved from database.' });
     }
     res.json(threads);
   });
@@ -42,6 +44,76 @@ router.route('/')
       res.status(201).json(result);
     });
   });
+});
+
+router.route('/:id')
+.get(function(req, res) {
+  Thread.findById(req.params.id, function(err, thread) {
+    if (err) return res.status(500).json({ message : 'Internal Server Error' });
+    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    res.json(thread);
+  });
 })
+.put(function(req, res) {
+  var updates = {};
+  if (req.body.title) updates.title = req.body.title;
+
+  Thread.findByIdAndUpdate(req.params.id, updates, function(err, thread) {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message : 'Internal Server Error' });
+    }
+    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    res.json(thread);
+  });
+})
+.delete(function(req, res) {
+  Thread.findByIdAndRemove(req.params.id, function(err, thread) {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message : 'Internal Server Error' });
+    }
+    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    res.status(204).json();
+  });
+});
+
+router.route('/:id/posts')
+.get(function(req, res) {
+  // First locates the thread by its id, then locate all related posts.
+  Thread.findById(req.params.id, function(err, thread) {
+    if (err) {
+      return res.status(500).json({ message : 'Posts could not be retrieved from database.' });
+    }
+    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    Post.find({ thread: thread.id}, function(err, posts) {
+      if (err) {
+        return res.status(500).json({ message : 'Posts could not be retrieved from database.' });
+      }
+      res.json(posts);
+    });
+  });
+})
+.post(function(req, res) {
+  Thread.findById(req.params.id, function(err, thread) {
+    if (err) {
+      return res.status(500).json({ message : 'Post could not be saved into database.' });
+    }
+    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    var post = new Post({
+      text: req.body.text,
+      image: req.params.image,
+      thread: thread.id
+    });
+    post.save(function(err, result) {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ message : 'Internal Server Error' });
+      }
+      res.location('/posts/' + result.id);
+      res.status(201).json(result);
+    });
+  });
+});
 
 module.exports = router;

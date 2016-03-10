@@ -5,7 +5,8 @@ var threadSchema = new mongoose.Schema({
   replies: Number,
   views: Number,
   created: { type: Date, default: Date.now },
-  board: { type : String }
+  board: { type : String },
+  __v: { type: Number, select: false} // Hide version property.
 });
 
 module.exports = mongoose.model('Thread', threadSchema);
