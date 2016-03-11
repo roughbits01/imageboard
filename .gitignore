@@ -1,5 +1,5 @@
-auth-server/node_modules/*
+auth-service/node_modules/*
 frontend/www/bower_components/*
 frontend/www/node_modules/*
-user-server/node_modules/*
-user-server/data/*
+user-service/node_modules/*
+user-service/data/*

@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 
 // Route middleware to verify a JWT token.
 // Access to endpoints is restricted by roles.
-module.exports = function(roles) {
+module.exports = function(requiredRoles) {
   return function(req, res, next) {
 
     // Check Authorization header for JWT token.
@@ -19,7 +19,9 @@ module.exports = function(roles) {
         return res.status(403).json({ message: 'Failed to authenticate token.' });
       }
 
-      if (!intersects(roles.sort(), decoded.roles.sort()))
+      var userRoles = decoded.roles;
+
+      if (!roleCheck(requiredRoles, userRoles))
       return res.status(403).json({ message: 'Insufficient rights.' });
       // If everything is good, save to request for use in other routes.
       req.user = decoded.sub;
@@ -27,6 +29,14 @@ module.exports = function(roles) {
     });
   }
 }
+
+/**
+ * Checks if a user has sufficient rights.
+ */
+function roleCheck(userRoles, requiredRoles) {
+  return intersects(userRoles, requiredRoles);
+}
+
 
 /**
  * Finds the the first intersection of two arrays.
