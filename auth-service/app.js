@@ -22,7 +22,6 @@ mongoose.connect(config.database.url);
 /**
  * Express configuration.
  */
-app.use(bodyParser.json());// to support JSON-encoded bodies.
 app.use(bodyParser.urlencoded({ extended: true }));// to support URL-encoded bodies.
 
 if (app.get('env') === 'development') {
@@ -40,10 +39,11 @@ app.post('/login', function(req, res) {
     return res.status(400).json({ message : 'Username and password required!' });
   } else {
     // Try to find a user we the given credentials selecting only the `hash` and `salt` fields.
-    User.findOne({ email: username }, 'password name roles', function(err, user) {
+    User.findOne({ email: username }, function(err, user) {
       if (err) return res.status(500).json({ message : 'Internal Server Error' });
       // If the credentials are valid we generate a token and dispatch it to the client.
       if(user) {
+        console.log(user);
         user.comparePassword(password, function(err, matches) {
           if (err) return res.status(500).json({ message : 'Internal Server Error' });
           if (matches) return res.json({ token : user.generateToken() });

@@ -1,5 +1,6 @@
 #!/bin/bash
 
-export JWT_SECRET='MY_SECRET'
+: ${JWT_SECRET:=MY_SECRET}
+export JWT_SECRET
 
 nginx -c $(PWD)/nginx.config
