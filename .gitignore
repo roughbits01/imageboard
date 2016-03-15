@@ -2,4 +2,4 @@ auth-service/node_modules/*
 frontend/www/bower_components/*
 frontend/www/node_modules/*
 user-service/node_modules/*
-user-service/data/*
+data/*

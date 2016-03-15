@@ -49,7 +49,7 @@ router.route('/')
 
 router.route('/:id')
 .get(function(req, res) {
-  Thread.findById(req.params.id, function(err, thread) {
+  Thread.findById(req.params.id, { $inc: { views: 1 }}, function(err, thread) {
     if (err) return res.status(500).json({ message : 'Internal Server Error' });
     if (!thread) return res.status(404).json({ message: 'Thread not found' });
     res.json(thread);
