@@ -10,6 +10,10 @@ var userSchema = new Schema({
     lowercase: true,
     unique: true
   },
+  fullname: {
+    type: String,
+    trim: true
+  },
   email: {
     type: String,
     trim: true,
@@ -22,7 +26,13 @@ var userSchema = new Schema({
     required: true,
     select: false
   },
-  roles: { type: [{ type: String, enum: ['user', 'admin', 'mod', 'founder'] }], select: false },
+  roles: {
+    type: [{
+      type: String,
+      enum: ['user', 'admin', 'mod', 'founder']
+    }],
+    select: false
+  },
   picture: String,
   created: { type: Date, default: Date.now, select: false },
   updated: { type: Date, select: false },

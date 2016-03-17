@@ -13,6 +13,7 @@ var users = require('./routes/users');
 var boards = require('./routes/boards');
 var threads = require('./routes/threads');
 var posts = require('./routes/posts');
+var stats = require('./routes/stats');
 var config = require("./config.json");
 var express = require('express');
 var crypto = require('crypto');
@@ -44,6 +45,7 @@ app.use('/users', users);
 app.use('/boards', boards);
 app.use('/threads', threads);
 app.use('/posts', posts);
+app.use('/stats', stats);
 app.set('port', process.env.PORT || 3000);
 
 exports.createToken = function(callback) {

@@ -182,6 +182,8 @@ router.route('/:id/resetpassword')
   //
 });
 
-
+// isbanned You are not currently banned from posting on X.
+// ban
+// unban
 
 module.exports = router;

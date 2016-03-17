@@ -56,6 +56,7 @@ router.route('/:id')
   });
 });
 
+// Threads can be voted to the front page.
 router.route('/:id/upvote')
 .post(function(req, res) {
   Post.findById(req.params.id, { $inc: { votes: 1 }}, function(err, post) {

@@ -10,11 +10,14 @@ var router = express.Router();
 //POST /threads/:id/posts
 //DELETE /threads/:id
 //PUT /threads/:id
-//GET /threads/top
+//GET /threads/top Popular Threads
+//POST /threads/:id/close
 //POST /threads/:id/upvote
 //POST /threads/:id/downvote
+//POST /threads/:id/unvote
 //POST /threads/:id/report
 //GET /threads/reported
+//GET /threads/featured
 
 router.route('/')
 .get(function(req, res) {
@@ -51,7 +54,7 @@ router.route('/:id')
 .get(function(req, res) {
   Thread.findById(req.params.id, { $inc: { views: 1 }}, function(err, thread) {
     if (err) return res.status(500).json({ message : 'Internal Server Error' });
-    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    if (!thread) return res.status(404).json({ message: 'Thread not found! It may has been pruned or deleted' });
     res.json(thread);
   });
 })
@@ -102,9 +105,10 @@ router.route('/:id/posts')
     }
     if (!thread) return res.status(404).json({ message: 'Thread not found' });
     var post = new Post({
+      name: req.body.name,
       text: req.body.text,
-      image: req.params.image,
-      thread: thread.id
+      image: req.body.image,
+      thread: req.params.id
     });
     post.save(function(err, result) {
       if (err) {
