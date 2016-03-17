@@ -16,15 +16,23 @@ var router = express.Router();
 //POST /threads/:id/report
 //GET /threads/reported
 
+/**
+ * GET /threads
+ * List all active threads.
+ */
 router.route('/')
 .get(function(req, res) {
   Thread.find().limit(50).exec(function(err, threads) {
     if (err) {
-      return res.status(500).json({ message : 'Threads could not be retrieved from database.' });
+      return res.status(500).json({ message : 'Threads could not be retrieved from database. Please try again in a few moments.' });
     }
     res.json(threads);
   });
 })
+/**
+ * POST /threads
+ * List all active threads.
+ */
 .post(function(req, res) {
   Board.count({ name: req.body.name }, function(err, count) {
     if (err) return res.status(500).json({ message : 'Internal Server Error' });
@@ -39,7 +47,7 @@ router.route('/')
     board.save(function(err, result) {
       if (err) {
         console.log(err);
-        return res.status(500).json({ message : 'There was a problem adding the information to the database.' });
+        return res.status(500).json({ message : 'There was a problem adding the information to the database. Please try again in a moment.' });
       }
       res.location('/boards/' + result.name);
       res.status(201).json(result);
@@ -51,7 +59,7 @@ router.route('/:id')
 .get(function(req, res) {
   Thread.findById(req.params.id, { $inc: { views: 1 }}, function(err, thread) {
     if (err) return res.status(500).json({ message : 'Internal Server Error' });
-    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    if (!thread) return res.status(404).json({ message: 'Sorry, there doesn\'t appear to be a thread with that ID.' });
     res.json(thread);
   });
 })
@@ -101,6 +109,7 @@ router.route('/:id/posts')
       return res.status(500).json({ message : 'Post could not be saved into database.' });
     }
     if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    if (thread.locked) return res.status(503).json({ 'Posting on this thread is currently disabled.' });
     var post = new Post({
       text: req.body.text,
       image: req.params.image,
