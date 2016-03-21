@@ -13,10 +13,22 @@ var users = require('./routes/users');
 var boards = require('./routes/boards');
 var threads = require('./routes/threads');
 var posts = require('./routes/posts');
-var stats = require('./routes/stats');
 var config = require("./config.json");
 var express = require('express');
 var crypto = require('crypto');
+
+var createToken = function(callback) {
+  crypto.randomBytes(16, function(err, token) {
+    if (err) callback(err);
+
+    if (token) callback(null, token.toString('hex'));
+    else callback(new Error('Problem when generating token'));
+  });
+};
+
+createToken(function(err, token) {
+  console.log(token);
+});
 
 /**
  * Create Express server.
@@ -34,7 +46,9 @@ mongoose.connection.on('error', function() {
 /**
  * Express configuration.
  */
-app.use(logger('dev'));// log requests to the console.
+ if (app.get('env') === 'development') {
+   app.use(logger('dev'));// log requests to the console.
+ }
 app.use(bodyParser.json());// to support JSON-encoded bodies.
 app.use(bodyParser.urlencoded({ extended: true }));// to support URL-encoded bodies.
 app.use(compress());// gzip/deflate outgoing responses.
@@ -45,18 +59,7 @@ app.use('/users', users);
 app.use('/boards', boards);
 app.use('/threads', threads);
 app.use('/posts', posts);
-app.use('/stats', stats);
 app.set('port', process.env.PORT || 3000);
-
-exports.createToken = function(callback) {
-  crypto.randomBytes(32, function(ex, token) {
-    if (ex) callback(ex);
-
-    if (token) callback(null, token.toString('hex'));
-    else callback(new Error('Problem when generating token'));
-  });
-};
-
 
 /**
  * Start Express server.

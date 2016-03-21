@@ -15,9 +15,11 @@ var router = express.Router();
 //POST /threads/:id/upvote
 //POST /threads/:id/downvote
 //POST /threads/:id/unvote
+//GET /threads/:id/votes
 //POST /threads/:id/report
 //GET /threads/reported
 //GET /threads/featured
+//GET /threads/:id/tags
 
 /**
  * GET /threads
@@ -111,8 +113,12 @@ router.route('/:id/posts')
     if (err) {
       return res.status(500).json({ message : 'Post could not be saved into database.' });
     }
-    if (!thread) return res.status(404).json({ message: 'Thread not found' });
-    if (thread.locked) return res.status(503).json({ 'Posting on this thread is currently disabled.' });
+    if (!thread) {
+      return res.status(404).json({ message: 'Thread not found' });
+    }
+    if (thread.locked) {
+      return res.status(503).json({ message: 'Posting on this thread is currently disabled.' });
+    }
     var post = new Post({
       name: req.body.name,
       text: req.body.text,
@@ -129,5 +135,17 @@ router.route('/:id/posts')
     });
   });
 });
+
+router.route('/:id/votes')
+.get(function(req, res) {
+  // First locates the thread by its id.
+  Thread.findById(req.params.id, 'votes', function(err, thread) {
+    if (err) {
+      return res.status(500).json({ message : 'Votes could not be retrieved from database.' });
+    }
+    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    res.json(thread);
+  });
+})
 
 module.exports = router;
