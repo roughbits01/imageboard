@@ -57,6 +57,7 @@ router.route('/:name/threads')
     if (err) {
       return res.status(500).json({ message : 'Board could not be retrieved from database.' });
     }
+    if (!board) return res.status(404).json({ message: 'Board not found' });
     Thread.find({ board: board.name}, function(err, threads) {
       if (err) {
         return res.status(500).json({ message : 'Threads could not be retrieved from database.' });
@@ -71,6 +72,7 @@ router.route('/:name/threads')
     if (err) {
       return res.status(500).json({ message : 'Board could not be retrieved from database.' });
     }
+    if (!board) return res.status(404).json({ message: 'Board not found' });
     var thread = new Thread({ title: req.body.title, board: req.params.name});
     thread.save(function(err, result) {
       if (err) {

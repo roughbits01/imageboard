@@ -16,9 +16,9 @@ var router = express.Router();
 //POST /threads/:id/downvote
 //POST /threads/:id/unvote
 //GET /threads/:id/votes
-//POST /threads/:id/report
+//POST /threads/:id/report Report a link, comment or message.
 //GET /threads/reported
-//GET /threads/featured
+//GET /threads/random
 //GET /threads/:id/tags
 
 /**
@@ -56,6 +56,26 @@ router.route('/')
       }
       res.location('/boards/' + result.name);
       res.status(201).json(result);
+    });
+  });
+});
+
+/**
+ * GET /random
+ * List n random threads.
+ */
+router.route('/random')
+.get(function(req, res) {
+  Thread.count().exec(function(err, count) {
+    if (err) {
+      return res.status(500).json({ message : 'Threads could not be retrieved from database.' });
+    }
+    var random = Math.floor(Math.random() * count);
+    Thread.findOne().skip(random).exec(function(err, thread) {
+      if (err) {
+        return res.status(500).json({ message : 'Threads could not be retrieved from database.' });
+      }
+      res.json(thread);
     });
   });
 });
@@ -146,6 +166,6 @@ router.route('/:id/votes')
     if (!thread) return res.status(404).json({ message: 'Thread not found' });
     res.json(thread);
   });
-})
+});
 
 module.exports = router;

@@ -154,6 +154,9 @@ router.route('/last/')
   });
 })
 
+/**
+ * Check whether a username is available for registration.
+ */
 router.route('/exists/:username')
 .get(function(req, res) {
   User.count({ name: req.params.username }, function (err, count) {

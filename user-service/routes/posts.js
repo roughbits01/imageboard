@@ -10,7 +10,7 @@ var router = express.Router();
 //POST /posts/:id/upvote
 //POST /posts/:id/downvote
 //POST /posts/:id/report
-//POST /posts/:id/hide
+//POST /posts/recent
 //GET /posts/reported
 
 router.route('/')
