@@ -3,4 +3,6 @@ frontend/www/node_modules/*
 auth-service/node_modules/*
 user-service/node_modules/*
 stat-service/node_modules/*
+image-service/node_modules/*
+image-service/uploads/*
 data/*
