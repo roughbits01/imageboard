@@ -26,11 +26,9 @@ var userSchema = new Schema({
     required: true,
     select: false
   },
-  roles: {
-    type: [{
-      type: String,
-      enum: ['user', 'admin', 'mod', 'founder']
-    }],
+  role: {
+    type: String,
+    enum: ['user', 'gold', 'mod', 'admin', 'founder'],
     select: false
   },
   picture: String,

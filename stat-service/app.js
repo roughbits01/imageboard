@@ -23,6 +23,13 @@ if (app.get('env') === 'development') {
   app.use(logger('dev'));// log requests to the console.
 }
 
+app.get('/api/:name/status', function(req, res) {
+  res.json({
+    service: req.param.name,
+    status: 'UP'//OFFLINE Please tweet us <a href="https://twitter.com/randomapi">@randomapi</a> if you are seeing this message.
+  });
+});
+
 //GET /stats
 app.get('/stats', function(req, res) {
   client.get('requests', function(err, count) {

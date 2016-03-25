@@ -5,6 +5,7 @@ var path = require('path');
 var crypto = require('crypto')
 var logger = require('morgan');
 var multer  = require('multer');
+//var sharp = require('sharp');
 var express = require('express');
 
 /**
@@ -55,6 +56,12 @@ var uploader = multer({
 });
 
 app.post('/photos/upload', uploader.single('photo'), function (req, res, next) {
+  //sharp('input.jpg')
+  //.resize(300, 200)
+  //.toFile('output.jpg', function(err) {
+    // output.jpg is a 300 pixels wide and 200 pixels high image
+    // containing a scaled and cropped version of input.jpg
+  //});
   res.redirect('/photos/' + req.file.filename);
 });
 

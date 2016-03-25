@@ -62,6 +62,19 @@ app.use('/posts', posts);
 app.set('port', process.env.PORT || 3000);
 
 /**
+ * Error handler middleware.
+ */
+app.use(function(req, res, next) {
+  // Handle errorss
+  res.staus(req.status).json({
+    errors: [{
+      name: 'http404',
+      message: 'Invalid URL, check URL and method (GET/POST/PUT/DELETE)'
+    }];
+  });
+});
+
+/**
  * Start Express server.
  */
 var server = app.listen(app.get('port'), function() {
