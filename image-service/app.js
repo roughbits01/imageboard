@@ -2,10 +2,14 @@
  * Module dependencies.
  */
 var path = require('path');
+var fs = require('fs');
 var crypto = require('crypto')
 var logger = require('morgan');
 var multer  = require('multer');
-//var sharp = require('sharp');
+var sharp = require('sharp');
+var bodyParser = require('body-parser');
+var request = require('request');
+var async = require('async');
 var express = require('express');
 
 /**
@@ -19,6 +23,19 @@ var app = express();
 if (app.get('env') === 'development') {
   app.use(logger('dev'));// log requests to the console.
 }
+
+app.use(bodyParser.urlencoded({ extended: true }));// to support URL-encoded bodies.
+app.use(bodyParser.json());// to support JSON-encoded bodies.
+
+app.get('/photos', function(req, res, next) {
+  fs.readdir('uploads/original', (err, data) => {
+    if (err) throw err;
+    var images = data.map(function(e) {
+      return 'uploads/thumbnail/' + e;
+    });
+    res.json(images);
+  });
+});
 
 /**
  * Prepare upload folder.
@@ -41,7 +58,7 @@ var uploader = multer({
     cb(null, true);
   },
   storage: multer.diskStorage({
-    destination: './uploads/',
+    destination: './uploads/original',
     filename: function (req, file, cb) {
       crypto.pseudoRandomBytes(16, function (err, raw) {
         if (err) return cb(err);
@@ -51,22 +68,29 @@ var uploader = multer({
   }),
   limits: {
     files: 1,
-    fileSize: 4194304
+    //fileSize: 4194304
   }
 });
 
 app.post('/photos/upload', uploader.single('photo'), function (req, res, next) {
-  //sharp('input.jpg')
-  //.resize(300, 200)
-  //.toFile('output.jpg', function(err) {
+  sharp('uploads/original/' + req.file.filename)
+  .resize(300, 200)
+  .toFile('uploads/thumbnail/' + req.file.filename, function(err) {
     // output.jpg is a 300 pixels wide and 200 pixels high image
     // containing a scaled and cropped version of input.jpg
-  //});
-  res.redirect('/photos/' + req.file.filename);
+  });
+  res.redirect('/uploads/original/' + req.file.filename);
 });
 
-app.use('/views', express.static('views'));
-app.use('/photos', express.static('uploads'));
+var download = function(url, filename, callback){
+  request({
+    url: url,
+    proxy: 'http://www-cache.ujf-grenoble.fr:3128'
+  }).pipe(fs.createWriteStream(filename)).on('close', callback);
+};
+
+app.use("/", express.static(__dirname + "/"));
+app.use('/', express.static('views'));
 
 /**
  * Start Express server.
