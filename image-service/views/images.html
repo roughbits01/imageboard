@@ -9,15 +9,16 @@
   <div class="w3-container w3-teal">
     <h1><i class="fa fa-picture-o"></i> IMAGE CLASSIFICATION</h1>
   </div>
-  <div class="w3-row-padding w3-margin-top" ng-repeat="image in images" ng-if="$index%6==0">
+  <div class="w3-row-padding w3-margin-top" ng-repeat="image in images" ng-if="$index%5==0">
+    <div class="w3-col m1 l1"></div>
     <div class="w3-col m2 l2">
       <div class="w3-card-2">
         <img class="w3-hover-opacity" ng-src="{{images[$index]}}" style="width:100%">
-        <!--<div class="w3-container">
-          <h4>Monterosso
-            <span class="w3-right fa fa-heart fa-fw pink bright"></span>
-          </h4>
-        </div>-->
+        <ul style="list-style: none;">
+		  <li ng-repeat="c in colors" style="float: left; width: 12.5%;">
+		    <a style="background-color: rgb({{c[0]}}, {{c[1]}}, {{c[2]}}); height: 12px; width: 100%;" title="" href="">fsdfsdf</a>
+		  </li>
+		</ul>
       </div>
     </div>
     <div ng-if="images.length > $index + 1" class="w3-col m2 l2">
@@ -40,18 +41,24 @@
         <img ng-src="{{images[$index+4]}}" style="width:100%">
       </div>
     </div>
-    <div ng-if="images.length > $index + 5" class="w3-col m2 l2">
-      <div class="w3-card-2">
-        <img ng-src="{{images[$index+5]}}" style="width:100%">
-      </div>
-    </div>
+	<div class="w3-col m1 l1"></div>
   </div>
 
   <script src="bower_components/angular/angular.min.js"></script>
   <script>
   var app = angular.module("myApp", []);
   app.controller("myCtrl", function($scope, $http) {
-
+  
+    $scope.colors = [ 
+	  [ 215, 47, 44 ],
+      [ 237, 222, 205 ],
+      [ 137, 28, 22 ],
+      [ 190, 135, 94 ],
+      [ 198, 159, 107 ],
+      [ 221, 98, 100 ],
+      [ 236, 148, 148 ] 
+	];
+	
     $scope.images = [];
 
     $http.get('/photos').then(function(response) {

@@ -13,6 +13,8 @@ var request = require('request');
 var async = require('async');
 var express = require('express');
 
+var colorThief = new ColorThief();
+
 /**
  * Create Express server.
  */
@@ -84,6 +86,8 @@ app.post('/photos/upload', uploader.single('photo'), function (req, res, next) {
   .toFile('uploads/thumbnail/' + req.file.filename, function(err) {
     // output.jpg is a 300 pixels wide and 200 pixels high image
     // containing a scaled and cropped version of input.jpg
+    console.log(colorThief.getPalette('uploads/thumbnail/' + req.file.filename, 8));
+    // Build a color palette from an image
   });
   res.redirect('/uploads/original/' + req.file.filename);
 });
@@ -128,8 +132,6 @@ app.post('/photos/uploadurl', function (req, res, next) {
       .toFile(thumbnail, function(err) {
         // output.jpg is a 300 pixels wide and 200 pixels high image
         // containing a scaled and cropped version of input.jpg
-        console.log(colorThief.getPalette(thumbnail, 8));
-        // Build a color palette from an image
       });
     });
   });
