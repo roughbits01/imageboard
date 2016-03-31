@@ -1,0 +1,12 @@
+.bright {
+  opacity:0.8;
+  cursor:pointer;
+}
+
+.bright:hover {
+  opacity:1;
+}
+
+.pink {
+  color:#FF0080;
+}
