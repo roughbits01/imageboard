@@ -10,17 +10,20 @@
 <body ng-app="myApp" ng-cloak ng-controller="myCtrl">
   <!-- Navbar -->
   <div class="w3-top">
-    <ul class="w3-navbar w3-padding-8 w3-black w3-card-2 w3-slim">
+    <ul class="w3-navbar w3-padding-8 w3-black">
       <li><a href="#"><i class="fa fa-home w3-large"></i></a></li>
       <li><a href="#">Link 1</a></li>
       <li><a href="#">Link 2</a></li>
       <li><a href="#">Link 3</a></li>
       <li class="w3-right">
-        <button class="w3-btn w3-green" onclick="document.getElementById('id02').style.display='block'">Try It Yourself</button>
+        <button class="w3-btn w3-margin-right w3-green" onclick="document.getElementById('id02').style.display='block'">
+          <i class="fa fa-plus"></i> New Thread
+        </button>
       </li>
     </ul>
   </div>
-  <div class="w3-container pinbar" style="margin-top:60px">
+  <div class="w3-container w3-padding-16 w3-light-grey" style="margin-top:54px">
+    w3-padding-16
     <div ng-repeat="p in pinned" class="w3-display-container w3-card-8 w3-right w3-hover-opacity w3-animate-zoom">
       <img ng-src="{{p}}" class=" " style="width:100px; cursor:pointer;">
       <span ng-click="unpin($index)" class="w3-display-topright w3-closebtn w3-hover-text-red">×</span>
@@ -34,7 +37,7 @@
         <h2>Preview</h2>
       </header>
       <div class="w3-container">
-        <img id="img01" style="width:50%">
+        <img id="img01" style="width:100%">
       </div>
       <!--<footer class="w3-container">
         <p>Modal Footer</p>
@@ -82,11 +85,11 @@
               <span style="font-size: 12px;line-height: 1;">10k</span>
             </span>
           </div>
-          <!--<ul style="list-style: none;">
+          <ul style="list-style: none;">
             <li ng-repeat="c in colors" style="float: left; width: 12.5%;">
-              <a style="background-color: rgb({{c[0]}}, {{c[1]}}, {{c[2]}}); height: 12px; width: 100%;" title="" href="">fsdfsdf</a>
+              <a style="background-color: {{c}}; height: 12px; width: 100%;" title="" href="">fsdfsdf</a>
             </li>
-          </ul>-->
+          </ul>
         </div>
       </div>
     </div>
@@ -155,14 +158,9 @@
   app.controller("myCtrl", function($scope, $http, LocalService) {
 
     $scope.colors = [
-	  [ 215, 47, 44 ],
-      [ 237, 222, 205 ],
-      [ 137, 28, 22 ],
-      [ 190, 135, 94 ],
-      [ 198, 159, 107 ],
-      [ 221, 98, 100 ],
-      [ 236, 148, 148 ]
-  	];
+      '#404948', '#948c86', '#616650', '#c5bebd',
+      '#4f564c', '#78775e', '#dad4d2', '#ada6a6'
+    ];
 
     $scope.images = [];
     $scope.pinned = [];
