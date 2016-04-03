@@ -1,0 +1,24 @@
+.bright {
+  opacity:0.8;
+  cursor:pointer;
+}
+
+.bright:hover {
+  opacity:1;
+}
+
+.like {
+  color: #aaa;
+  cursor:pointer;
+  transition: color .2s ease-in;
+}
+
+.like:hover {
+  color: #FF0080;
+}
+
+.pinbar {
+  border-top: 2px solid #b92b27;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 3px 2px -2px rgba(200,200,200,0.2);
+}

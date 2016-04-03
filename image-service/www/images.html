@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="www/w3.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="www/index.css">
+</head>
+<body ng-app="myApp" ng-cloak ng-controller="myCtrl">
+  <!-- Navbar -->
+  <div class="w3-top">
+    <ul class="w3-navbar w3-padding-8 w3-black w3-card-2 w3-slim">
+      <li><a href="#"><i class="fa fa-home w3-large"></i></a></li>
+      <li><a href="#">Link 1</a></li>
+      <li><a href="#">Link 2</a></li>
+      <li><a href="#">Link 3</a></li>
+      <li class="w3-right">
+        <button class="w3-btn w3-green" onclick="document.getElementById('id02').style.display='block'">Try It Yourself</button>
+      </li>
+    </ul>
+  </div>
+  <div class="w3-container pinbar" style="margin-top:60px">
+    <div ng-repeat="p in pinned" class="w3-display-container w3-card-8 w3-right w3-hover-opacity w3-animate-zoom">
+      <img ng-src="{{p}}" class=" " style="width:100px; cursor:pointer;">
+      <span ng-click="unpin($index)" class="w3-display-topright w3-closebtn w3-hover-text-red">×</span>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-zoom">
+      <header class="w3-container">
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn">×</span>
+        <h2>Preview</h2>
+      </header>
+      <div class="w3-container">
+        <img id="img01" style="width:50%">
+      </div>
+      <!--<footer class="w3-container">
+        <p>Modal Footer</p>
+      </footer>-->
+    </div>
+  </div>
+  <div id="id02" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-top">
+      <header class="w3-container">
+        <span onclick="document.getElementById('id02').style.display='none'" class="w3-closebtn">×</span>
+        <h4>Popular Posts</h4>
+      </header>
+      <div class="w3-container">
+        <ul class="w3-ul w3-white">
+          <li ng-repeat="p in pinned" class="w3-padding-16 w3-hover-light-grey">
+            <span class="w3-closebtn w3-padding w3-margin-right w3-large w3-hover-text-red">×</span>
+            <img ng-src="{{p}}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+            <span class="w3-large">Lorem</span><br>
+            <span>Sed mattis nunc</span>
+          </li>
+        </ul>
+      </div>
+      <footer class="w3-container w3-border-top w3-padding-8">
+        <button onclick="document.getElementById('id02').style.display='none'" type="button" class="w3-btn w3-red w3-right">Cancel</button>
+      </footer>
+    </div>
+  </div>
+  <!-- Page Container -->
+  <div class="w3-container">
+    <div ng-repeat="r in images.length / 6 | range" class="w3-row-padding w3-margin-top">
+      <div ng-repeat="c in 6 | range" ng-if="r * 6 + c < images.length" class="w3-col s2 m2 l2">
+        <div class="w3-card-2">
+          <div class="w3-display-container">
+            <img ng-src="{{images[r * 6 + c]}}" onclick="onClick(this)" style="width:100%; cursor:pointer;">
+            <span ng-click="pin(r * 6 + c)" class="w3-display-topright w3-margin-4 fa fa-thumb-tack like"></span>
+          </div>
+          <div class="w3-container w3-padding-8">
+            <span class="w3-right fa fa-heart like" style="margin-left :8px;">
+              <span style="font-size: 12px;line-height: 1;">2145</span>
+            </span>
+            <span class="w3-right fa fa-comment like" style="margin-left: 8px;">
+              <span style="font-size: 12px;line-height: 1;">125</span>
+            </span>
+            <span class="w3-right fa fa-eye like" style="margin-left: 8px;">
+              <span style="font-size: 12px;line-height: 1;">10k</span>
+            </span>
+          </div>
+          <!--<ul style="list-style: none;">
+            <li ng-repeat="c in colors" style="float: left; width: 12.5%;">
+              <a style="background-color: rgb({{c[0]}}, {{c[1]}}, {{c[2]}}); height: 12px; width: 100%;" title="" href="">fsdfsdf</a>
+            </li>
+          </ul>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script>
+  function onClick(element) {
+    var isGif = element.src.substr(element.src.length - 3) == 'gif';
+    console.log(element.src.substr(element.src.length - 3));
+    if (isGif) {
+      element.src = element.src.replace('thumbnail', 'original').replace('.jpg', '.gif');
+    } else {
+      document.getElementById("img01").src = element.src.replace('thumbnail', 'original');
+      document.getElementById("id01").style.display = "block";
+    }
+  }
+  var app = angular.module("myApp", []);
+  app.filter('range', function() {
+    return function(n) {
+      var res = [];
+      for (var i = 0; i < n; i++) {
+        res.push(i);
+      }
+      return res;
+    };
+  });
+  app.filter('shorten', function () {
+    return function (value, wordwise, max, tail) {
+      if (!value) return '';
+
+      max = parseInt(max, 10);
+      if (!max) return value;
+      if (value.length <= max) return value;
+
+      value = value.substr(0, max);
+      if (wordwise) {
+        var lastspace = value.lastIndexOf(' ');
+        if (lastspace != -1) {
+          value = value.substr(0, lastspace);
+        }
+      }
+
+      return value + (tail || ' …');
+    };
+  });
+  app.filter('elapsed', function(){
+    return function(date) {
+      if (!date) return;
+      var time = date,
+      now = new Date().getTime(),
+      diff = now - time,
+      seconds = Math.floor(diff / 1000),
+      minutes = Math.floor(seconds / 60),
+      hours = Math.floor(minutes / 60),
+      days = Math.floor(hours / 24);
+      if (days > 1) return days + " jours";
+      else if (days == 1) return "1 jour";
+      else if (hours > 1) return hours + " heures";
+      else if (hours == 1) return "une heure";
+      else if (minutes > 1) return minutes + " minutes";
+      else if (minutes == 1) return "une minute";
+      return "quelques secondes";
+    }
+  });
+  app.controller("myCtrl", function($scope, $http, LocalService) {
+
+    $scope.colors = [
+	  [ 215, 47, 44 ],
+      [ 237, 222, 205 ],
+      [ 137, 28, 22 ],
+      [ 190, 135, 94 ],
+      [ 198, 159, 107 ],
+      [ 221, 98, 100 ],
+      [ 236, 148, 148 ]
+  	];
+
+    $scope.images = [];
+    $scope.pinned = [];
+    var pins = LocalService.getObject('pinned');
+    if (pins) $scope.pinned = pins;
+
+    $http.get('/photos').then(function(response) {
+      $scope.images = response.data
+    });
+
+    $scope.pin = function(index) {
+      for (var i = 0; i < $scope.pinned.length; i++) {
+        if ($scope.images[index] === $scope.pinned[i]) {
+          return;
+        }
+      }
+      $scope.pinned.push($scope.images[index]);
+      LocalService.setObject('pinned', $scope.pinned);
+    }
+
+    $scope.unpin = function(index) {
+      $scope.pinned.splice(index, 1);
+      LocalService.setObject('pinned', $scope.pinned);
+    }
+  });
+  </script>
+  <script src="localService.js"></script>
+</body>
+</html>

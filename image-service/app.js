@@ -1,19 +1,20 @@
 /**
  * Module dependencies.
  */
+var util = require('util');
 var path = require('path');
-var fs = require('fs');
+var fs = require('fs');// in order to write to the filesystem we need the `fs` lib
 var crypto = require('crypto')
 var logger = require('morgan');
 var multer  = require('multer');
+//var color = require('color');
 var sharp = require('sharp');
 var bodyParser = require('body-parser');
-var ColorThief = require('color-thief');
+var compression = require('compression');
+//var attention = require('attention');
 var request = require('request');
 var async = require('async');
 var express = require('express');
-
-var colorThief = new ColorThief();
 
 /**
  * Create Express server.
@@ -27,15 +28,17 @@ if (app.get('env') === 'development') {
   app.use(logger('dev'));// log requests to the console.
 }
 
+// compress all requests
+app.use(compression());
+
 app.use(bodyParser.urlencoded({ extended: true }));// to support URL-encoded bodies.
 app.use(bodyParser.json());// to support JSON-encoded bodies.
 
 app.get('/photos', function(req, res, next) {
-  fs.readdir('uploads/original', (err, data) => {
+  fs.readdir('uploads/thumbnail', (err, data) => {
     if (err) throw err;
     var images = data.map(function(e) {
-      var ext = path.extname(e);
-      return 'uploads/thumbnail/' + path.basename(e, ext) + '.jpg';
+      return 'uploads/thumbnail/' + e;
     });
     res.json(images);
   });
@@ -54,6 +57,13 @@ var exts = {
 };
 
 var maxSize = 4 * 1024 * 1024;
+
+// Limits
+var maximum = {
+  width: 0x3FFF,
+  height: 0x3FFF,
+  pixels: Math.pow(0x3FFF, 2)
+};
 
 var uploader = multer({
   fileFilter: function(req, file, cb) {
@@ -80,19 +90,33 @@ var uploader = multer({
   }
 });
 
+sharp('uploads/original/1cbb35de81d56f24187436127f5d141a.jpg').metadata(function(err, metadata) {
+  console.log(typeof metadata.icc);
+});
+
 app.post('/photos/upload', uploader.single('photo'), function (req, res, next) {
   sharp('uploads/original/' + req.file.filename)
+  .metadata(function(err, metadata) { console.log(metadata) })
   .resize(300, 200)
+  .withoutEnlargement()
   .toFile('uploads/thumbnail/' + req.file.filename, function(err) {
     // output.jpg is a 300 pixels wide and 200 pixels high image
     // containing a scaled and cropped version of input.jpg
-    console.log(colorThief.getPalette('uploads/thumbnail/' + req.file.filename, 8));
-    // Build a color palette from an image
+    //console.log(colorThief.getPalette(thumbnail, 8));
+    /*attention('uploads/thumbnail/' + req.file.filename)
+    .swatches(8)
+    .palette(function(err, palette) {
+      console.log('It took me ' + palette.duration + 'ms to find the palette');
+      palette.swatches.forEach(function(swatch) {
+        console.log(swatch);
+      });
+    });*/
   });
-  res.redirect('/uploads/original/' + req.file.filename);
+
+  res.redirect('uploads/original/' + req.file.filename);
 });
 
-request.defaults({'proxy':'http://55.1.35.226:8080'});
+//request.defaults({'proxy':'http://55.1.35.226:8080'});
 
 app.post('/photos/uploadurl', function (req, res, next) {
   var url = req.body.url;
@@ -101,7 +125,10 @@ app.post('/photos/uploadurl', function (req, res, next) {
   }
 
   request.head(url, function(err, response, body) {
-    if (err) return res.status(500).json({ message: 'Invalid URL' });
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message: 'Invalid URL' });
+    }
 
     var status = response.statusCode;
     if (status != 200 && status != 304) {
@@ -110,7 +137,7 @@ app.post('/photos/uploadurl', function (req, res, next) {
 
     var type = response.headers['content-type'];
     if(allowedMime.indexOf(type) == -1) {
-      return res.status(400).json({ message: 'Only JPEG and PNG images are accepted' });
+      return res.status(400).json({ message: 'Only JPEG, PNG, and GIF images are accepted' });
     }
 
     var size = response.headers['content-length'];
@@ -128,17 +155,20 @@ app.post('/photos/uploadurl', function (req, res, next) {
       var thumbnail = 'uploads/thumbnail/' + id + '.jpg';
       // Create thumbnail
       sharp(filename)
-      .resize(300, 200)
-      .toFile(thumbnail, function(err) {
+      .metadata(function(err, metadata) { console.log(metadata.exif.toString()) })
+      //.resize(300, 200)
+      //.toFile(thumbnail, function(err) {
         // output.jpg is a 300 pixels wide and 200 pixels high image
         // containing a scaled and cropped version of input.jpg
-      });
+        //console.log(colorThief.getPalette(thumbnail, 8));
+        // Build a color palette from an image
+      //});
     });
   });
 });
 
 app.use("/", express.static(__dirname + "/"));
-app.use('/', express.static('views'));
+app.use('/', express.static('www'));
 
 /**
  * Start Express server.
