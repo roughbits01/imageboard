@@ -53,7 +53,7 @@
       <div class="w3-container">
         <ul class="w3-ul w3-white">
           <li ng-repeat="p in pinned" class="w3-padding-16 w3-hover-light-grey">
-            <span class="w3-closebtn w3-padding w3-margin-right w3-large w3-hover-text-red">×</span>
+            <span title="This answer is useful" class="w3-closebtn w3-padding w3-margin-right w3-large w3-hover-text-red">×</span>
             <img ng-src="{{p}}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
             <span class="w3-large">Lorem</span><br>
             <span>Sed mattis nunc</span>
@@ -66,7 +66,7 @@
     </div>
   </div>
   <!-- Page Container -->
-  <div class="w3-container">
+  <div ng-if="!list" class="w3-container">
     <div ng-repeat="r in images.length / 6 | range" class="w3-row-padding w3-margin-top">
       <div ng-repeat="c in 6 | range" ng-if="r * 6 + c < images.length" class="w3-col s2 m2 l2">
         <div class="w3-card-2">
@@ -93,6 +93,27 @@
         </div>
       </div>
     </div>
+  </div>
+  <div ng-if="list" class="w3-container w3-animate-left">
+    <ul class="w3-ul w3-white">
+      <li ng-repeat="image in images" class="w3-padding-16 w3-hover-light-grey">
+        <div class="w3-row">
+          <div class="w3-col w3-padding-8" style="width:40px">
+            <span class="w3-xlarge fa fa-chevron-up like"></span>
+            <span>5004</span>
+            <span class="w3-xlarge fa fa-chevron-down like"></span>
+          </div>
+          <div class="w3-col w3-padding-8" style="width:96px">
+            <img ng-src="{{image}}" alt="Image" class="w3-margin-right" style="width:100%">
+          </div>
+          <div class="w3-rest">
+            <span title="This answer is useful" class="w3-closebtn w3-padding w3-margin-right w3-large w3-hover-text-red">×</span>
+            <span class="w3-large">Lorem</span><br>
+            <span>Sed mattis nunc</span>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 
   <script src="bower_components/angular/angular.min.js"></script>
@@ -162,6 +183,8 @@
       '#4f564c', '#78775e', '#dad4d2', '#ada6a6'
     ];
 
+    $scope.list = true;
+
     $scope.images = [];
     $scope.pinned = [];
     var pins = LocalService.getObject('pinned');
@@ -169,6 +192,7 @@
 
     $http.get('/photos').then(function(response) {
       $scope.images = response.data
+      console.log($scope.images);
     });
 
     $scope.pin = function(index) {
