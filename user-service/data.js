@@ -13,6 +13,7 @@ client.connect('mongodb://localhost:27017/test', function(err, db) {
     return;
   }
 
+  /*
   // Get the collection
   var col = db.collection('users');
 
@@ -41,5 +42,23 @@ client.connect('mongodb://localhost:27017/test', function(err, db) {
     assert.equal(users.length, res.insertedCount);
     // Finish up test
     db.close();
+  });*/
+
+  var col = db.collection('boards');
+  var boards = [{
+    name: 'random',
+    description: 'random posts'
+  }];
+  col.insertMany(boards, function(err, res) {
+    assert.equal(null, err);
+    assert.equal(boards.length, res.insertedCount);
+    // Finish up test
+    db.close();
   });
 });
+
+var threads = [{
+  title: 'YLYL',
+  text: 'Let\'s start the week off right',
+  board: 'random'
+}];

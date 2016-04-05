@@ -11,7 +11,7 @@ var multer  = require('multer');
 var sharp = require('sharp');
 var bodyParser = require('body-parser');
 var compression = require('compression');
-var attention = require('attention');
+//var attention = require('attention');
 var request = require('request');
 var async = require('async');
 var express = require('express');
@@ -91,14 +91,14 @@ app.post('/photos/upload', uploader.single('photo'), function (req, res, next) {
   .toFile('uploads/thumbnail/' + req.file.filename, function(err) {
     // output.jpg is a 300 pixels wide and 200 pixels high image
     // containing a scaled and cropped version of input.jpg
-    attention('uploads/thumbnail/' + req.file.filename)
+    /*attention('uploads/thumbnail/' + req.file.filename)
     .swatches(8)
     .palette(function(err, palette) {
       console.log('It took me ' + palette.duration + 'ms to find the palette');
       palette.swatches.forEach(function(swatch) {
         console.log(swatch);
       });
-    });
+    });*/
   });
 
   res.redirect('uploads/original/' + req.file.filename);
@@ -149,7 +149,7 @@ app.post('/photos/uploadurl', function (req, res, next) {
         // output.jpg is a 300 pixels wide and 200 pixels high image
         // containing a scaled and cropped version of input.jpg
         // Build a color palette from an image
-        attention(thumbnail)
+        /*attention(thumbnail)
         .swatches(8)
         .palette(function(err, palette) {
           if (err) throw err;
@@ -157,7 +157,7 @@ app.post('/photos/uploadurl', function (req, res, next) {
           palette.swatches.forEach(function(swatch) {
             console.log(swatch);
           });
-        });
+        });*/
       });
     });
   });

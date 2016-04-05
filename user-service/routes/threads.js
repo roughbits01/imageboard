@@ -82,9 +82,10 @@ router.route('/random')
 
 router.route('/:id')
 .get(function(req, res) {
-  Thread.findById(req.params.id, { $inc: { views: 1 }}, function(err, thread) {
+  Thread.findById(req.params.id/*, { $inc: { views: 1 }}*/, function(err, thread) {
     if (err) return res.status(500).json({ message : 'Internal Server Error' });
     if (!thread) return res.status(404).json({ message: 'Thread not found! It may has been pruned or deleted' });
+    console.log(thread.toTree());
     res.json(thread);
   });
 })
@@ -115,8 +116,9 @@ router.route('/:id')
 router.route('/:id/posts')
 .get(function(req, res) {
   // First locates the thread by its id, then locate all related posts.
-  Thread.findById(req.params.id, function(err, thread) {
+  /*Thread.findById(req.params.id, function(err, thread) {
     if (err) {
+      console.log(err);
       return res.status(500).json({ message : 'Posts could not be retrieved from database.' });
     }
     if (!thread) return res.status(404).json({ message: 'Thread not found' });
@@ -126,10 +128,29 @@ router.route('/:id/posts')
       }
       res.json(posts);
     });
+  });*/
+  Thread.findById(req.params.id, 'replies', function(err, thread) {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message : 'Posts could not be retrieved from database.' });
+    }
+    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+    res.json(thread);
   });
 })
 .post(function(req, res) {
-  Thread.findById(req.params.id, function(err, thread) {
+  Thread.findByIdAndUpdate(req.params.id,
+  { $push: { 'replies': { name: req.body.name, text: req.body.text, parent: 2 }}},
+  function(err, thread) {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ message : 'Post could not be saved.' });
+    }
+    console.log(thread);
+    res.status(201).json(thread);
+  });
+
+  /*Thread.findById(req.params.id, function(err, thread) {
     if (err) {
       return res.status(500).json({ message : 'Post could not be saved into database.' });
     }
@@ -152,8 +173,7 @@ router.route('/:id/posts')
       }
       res.location('/posts/' + result.id);
       res.status(201).json(result);
-    });
-  });
+    });*/
 });
 
 router.route('/:id/votes')

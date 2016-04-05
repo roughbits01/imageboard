@@ -73,7 +73,11 @@ router.route('/:name/threads')
       return res.status(500).json({ message : 'Board could not be retrieved from database.' });
     }
     if (!board) return res.status(404).json({ message: 'Board not found' });
-    var thread = new Thread({ title: req.body.title, board: req.params.name});
+    var thread = new Thread({
+      title: req.body.title,
+      text: req.body.text,
+      board: req.params.name
+    });
     thread.save(function(err, result) {
       if (err) {
         console.log(err);

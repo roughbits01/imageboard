@@ -26,10 +26,6 @@ var createToken = function(callback) {
   });
 };
 
-createToken(function(err, token) {
-  console.log(token);
-});
-
 /**
  * Create Express server.
  */
@@ -66,11 +62,11 @@ app.set('port', process.env.PORT || 3000);
  */
 app.use(function(req, res, next) {
   // Handle errorss
-  res.staus(req.status).json({
+  res.status(req.status).json({
     errors: [{
       name: 'http404',
       message: 'Invalid URL, check URL and method (GET/POST/PUT/DELETE)'
-    }];
+    }]
   });
 });
 
