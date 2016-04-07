@@ -1,0 +1,61 @@
+<div ng-if="!list" class="w3-container">
+  <div class="w3-container w3-padding-16 w3-light-grey">
+    <div ng-repeat="p in pinned" class="w3-display-container w3-card-8 w3-right w3-hover-opacity w3-animate-zoom">
+      <img ng-src="{{p}}" class=" " style="width:100px; cursor:pointer;">
+      <span ng-click="unpin($index)" class="w3-display-topright w3-closebtn w3-hover-text-red">×</span>
+    </div>
+  </div>
+  <h2>Popular Threads</h2>
+  <div ng-repeat="r in images.length / 6 | range" class="w3-row-padding w3-margin-top">
+    <div ng-repeat="c in 6 | range" ng-if="r * 6 + c < images.length" class="w3-col s2 m2 l2">
+      <div class="w3-card-2">
+        <div class="w3-display-container parent">
+          <img ng-src="{{images[r * 6 + c]}}" onclick="onClick(this)" style="width:100%; cursor:pointer;">
+          <span class="w3-display-topright w3-margin-2 w3-padding-2 w3-black w3-round"><i>GIF</i></span>
+          <span class="w3-display-topleft w3-black w3-opacity actions" style="width:100%;">
+            <span class="w3-right w3-margin-4 w3-large fa fa-thumb-tack action pin" ng-click="pin(r * 6 + c)"></span>
+            <span class="w3-margin-4 w3-large fa fa-flag action report" onclick="document.getElementById('id00').style.display='block'"></span>
+          </span>
+        </div>
+        <!--<div class="w3-container w3-padding-8">
+          <span class="w3-right fa fa-heart like" style="margin-left :8px;">
+            <span style="font-size: 12px;line-height: 1;">2145</span>
+          </span>
+          <span class="w3-right fa fa-comment like" style="margin-left: 8px;">
+            <span style="font-size: 12px;line-height: 1;">125</span>
+          </span>
+          <span class="w3-right fa fa-eye like" style="margin-left: 8px;">
+            <span style="font-size: 12px;line-height: 1;">10k</span>
+          </span>
+        </div>-->
+        <!--<ul style="list-style: none;">
+          <li ng-repeat="c in colors" style="float: left; width: 12.5%;">
+            <a style="background-color: {{c}}; height: 12px; width: 100%;" title="" href="">fsdfsdf</a>
+          </li>
+        </ul>-->
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-if="list" class="w3-container">
+  <ul class="w3-ul w3-white">
+    <li ng-repeat="image in images" class="w3-padding-16 w3-hover-light-grey">
+      <div class="w3-row">
+        <div class="w3-col w3-padding-small" style="width:56px">
+          <span class="fa fa-chevron-up fa-2x action like"></span>
+          <b class="w3-text-grey">{{random()}}</b>
+          <span class="fa fa-chevron-down fa-2x action like"></span>
+        </div>
+        <div class="w3-col w3-padding-8" style="width:128px">
+          <a href="#threads/dfdfdf">
+            <img ng-src="{{image}}" alt="Image" class="w3-margin-right" style="width:100%">
+          </a>
+        </div>
+        <div class="w3-rest w3-padding-small">
+          <span class="w3-large">Lorem</span><br>
+          <span>Sed mattis nunc</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

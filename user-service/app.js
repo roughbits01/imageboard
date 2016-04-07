@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var authorize = require('./middlewares/validation');
+var cors = require('./middlewares/cors');
 var users = require('./routes/users');
 var boards = require('./routes/boards');
 var threads = require('./routes/threads');
@@ -49,6 +50,7 @@ app.use(bodyParser.json());// to support JSON-encoded bodies.
 app.use(bodyParser.urlencoded({ extended: true }));// to support URL-encoded bodies.
 app.use(compress());// gzip/deflate outgoing responses.
 app.use(validator());
+app.use(cors);
 app.disable('x-powered-by');
 //app.use('/api/users', authorize(['mod']));
 app.use('/users', users);

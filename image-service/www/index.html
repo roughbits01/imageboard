@@ -7,14 +7,12 @@
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="www/index.css">
 </head>
-<body ng-app="myApp" ng-cloak ng-controller="myCtrl">
+<body ng-app="myApp" ng-cloak>
   <!-- Navbar -->
   <div class="w3-top">
     <ul class="w3-navbar w3-padding-8 w3-black">
-      <li><a href="#"><i class="fa fa-home w3-large"></i></a></li>
-      <li><a href="#">Boards</a></li>
-      <li><a href="#">Link 2</a></li>
-      <li><a href="#">Link 3</a></li>
+      <li><a href="#/"><i class="fa fa-home w3-large"></i></a></li>
+      <li><a href="#boards">Boards</a></li>
       <li class="w3-right">
         <button class="w3-btn w3-margin-right w3-green w3-hover-opacity" onclick="document.getElementById('id03').style.display='block'">
           <i class="fa fa-plus"></i> New Thread
@@ -27,12 +25,6 @@
         </div>
       </li>-->
     </ul>
-  </div>
-  <div class="w3-container w3-padding-16 w3-light-grey" style="margin-top:54px">
-    <div ng-repeat="p in pinned" class="w3-display-container w3-card-8 w3-right w3-hover-opacity w3-animate-zoom">
-      <img ng-src="{{p}}" class=" " style="width:100px; cursor:pointer;">
-      <span ng-click="unpin($index)" class="w3-display-topright w3-closebtn w3-hover-text-red">×</span>
-    </div>
   </div>
   <!-- Modal -->
   <div id="id00" class="w3-modal">
@@ -77,7 +69,7 @@
       <div class="w3-container">
         <ul class="w3-ul w3-white">
           <li ng-repeat="p in pinned" class="w3-padding-16 w3-hover-light-grey">
-            <span class="w3-closebtn w3-padding w3-margin-right w3-large w3-hover-text-red">×</span>
+            <span title="This answer is useful" class="w3-closebtn w3-padding w3-margin-right w3-large w3-hover-text-red">×</span>
             <img ng-src="{{p}}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
             <span class="w3-large">Lorem</span><br>
             <span>Sed mattis nunc</span>
@@ -119,41 +111,18 @@
     </div>
   </div>
   <!-- Page Container -->
-  <div class="w3-container w3-animate-left">
-    <h2>Popular Threads</h2>
-    <div ng-repeat="r in images.length / 6 | range" class="w3-row-padding w3-margin-top">
-      <div ng-repeat="c in 6 | range" ng-if="r * 6 + c < images.length" class="w3-col s2 m2 l2">
-        <div class="w3-card-2">
-          <div class="w3-display-container parent">
-            <img ng-src="{{images[r * 6 + c]}}" onclick="onClick(this)" style="width:100%; cursor:pointer;">
-            <span class="w3-display-topright w3-margin-2 w3-padding-2 w3-black w3-round"><i>GIF</i></span>
-            <span class="w3-display-topleft w3-black w3-opacity actions" style="width:100%;">
-              <span class="w3-right w3-margin-4 w3-large fa fa-thumb-tack action pin" ng-click="pin(r * 6 + c)"></span>
-              <span class="w3-margin-4 w3-large fa fa-flag action report" onclick="document.getElementById('id00').style.display='block'"></span>
-            </span>
-          </div>
-          <!--<div class="w3-container w3-padding-8">
-            <span class="w3-right fa fa-heart like" style="margin-left :8px;">
-              <span style="font-size: 12px;line-height: 1;">2145</span>
-            </span>
-            <span class="w3-right fa fa-comment like" style="margin-left: 8px;">
-              <span style="font-size: 12px;line-height: 1;">125</span>
-            </span>
-            <span class="w3-right fa fa-eye like" style="margin-left: 8px;">
-              <span style="font-size: 12px;line-height: 1;">10k</span>
-            </span>
-          </div>-->
-          <!--<ul style="list-style: none;">
-            <li ng-repeat="c in colors" style="float: left; width: 12.5%;">
-              <a style="background-color: {{c}}; height: 12px; width: 100%;" title="" href="">fsdfsdf</a>
-            </li>
-          </ul>-->
-        </div>
-      </div>
-    </div>
+  <nav class="w3-sidenav w3-card-2" style="width:200px">
+    <a class="w3-padding w3-green" href="javascript:void(0)">Home</a>
+    <a class="w3-padding" href="javascript:void(0)">About</a>
+    <a class="w3-padding" href="javascript:void(0)">Contact</a>
+    <a class="w3-padding" href="javascript:void(0)">Support</a>
+  </nav>
+  <div ng-view class="w3-animate-left" style="margin-top:54px;margin-left:200px;">
+
   </div>
 
   <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
   <script>
   function onClick(element) {
     var isGif = element.src.substr(element.src.length - 3) == 'gif';
@@ -165,7 +134,17 @@
       document.getElementById("id01").style.display = "block";
     }
   }
-  var app = angular.module("myApp", []);
+  var app = angular.module("myApp", ['ngRoute']);
+  app.config(function($routeProvider, $locationProvider) {
+    $routeProvider.when('/threads/:id', {
+      templateUrl: 'templates/thread.html',
+      controller: 'ThreadController'
+    })
+    .when('/', {
+      templateUrl: 'templates/threads.html',
+      controller: 'ThreadsController'
+    });
+  });
   app.filter('range', function() {
     return function(n) {
       var res = [];
@@ -197,54 +176,25 @@
   app.filter('elapsed', function(){
     return function(date) {
       if (!date) return;
-      var time = date,
+      var time = Date.parse(date),
       now = new Date().getTime(),
       diff = now - time,
       seconds = Math.floor(diff / 1000),
       minutes = Math.floor(seconds / 60),
       hours = Math.floor(minutes / 60),
       days = Math.floor(hours / 24);
-      if (days > 1) return days + " jours";
-      else if (days == 1) return "1 jour";
-      else if (hours > 1) return hours + " heures";
-      else if (hours == 1) return "une heure";
-      else if (minutes > 1) return minutes + " minutes";
-      else if (minutes == 1) return "une minute";
-      return "quelques secondes";
-    }
-  });
-  app.controller("myCtrl", function($scope, $http, LocalService) {
-
-    $scope.colors = [
-      '#404948', '#948c86', '#616650', '#c5bebd',
-      '#4f564c', '#78775e', '#dad4d2', '#ada6a6'
-    ];
-
-    $scope.images = [];
-    $scope.pinned = [];
-    var pins = LocalService.getObject('pinned');
-    if (pins) $scope.pinned = pins;
-
-    $http.get('/photos').then(function(response) {
-      $scope.images = response.data
-    });
-
-    $scope.pin = function(index) {
-      for (var i = 0; i < $scope.pinned.length; i++) {
-        if ($scope.images[index] === $scope.pinned[i]) {
-          return;
-        }
-      }
-      $scope.pinned.push($scope.images[index]);
-      LocalService.setObject('pinned', $scope.pinned);
-    }
-
-    $scope.unpin = function(index) {
-      $scope.pinned.splice(index, 1);
-      LocalService.setObject('pinned', $scope.pinned);
+      if (days > 1) return days + " days ago";
+      else if (days == 1) return "1 day ago";
+      else if (hours > 1) return hours + " hours ago";
+      else if (hours == 1) return "one hour ago";
+      else if (minutes > 1) return minutes + " minutes ago";
+      else if (minutes == 1) return "one minute ago";
+      return "few seconds ago";
     }
   });
   </script>
   <script src="localService.js"></script>
+  <script src="controllers/threads.js"></script>
+  <script src="controllers/thread.js"></script>
 </body>
 </html>

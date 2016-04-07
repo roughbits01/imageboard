@@ -85,7 +85,6 @@ router.route('/:id')
   Thread.findById(req.params.id/*, { $inc: { views: 1 }}*/, function(err, thread) {
     if (err) return res.status(500).json({ message : 'Internal Server Error' });
     if (!thread) return res.status(404).json({ message: 'Thread not found! It may has been pruned or deleted' });
-    console.log(thread.toTree());
     res.json(thread);
   });
 })
@@ -135,18 +134,22 @@ router.route('/:id/posts')
       return res.status(500).json({ message : 'Posts could not be retrieved from database.' });
     }
     if (!thread) return res.status(404).json({ message: 'Thread not found' });
-    res.json(thread);
+    res.json(thread.toTree());
   });
 })
 .post(function(req, res) {
-  Thread.findByIdAndUpdate(req.params.id,
-  { $push: { 'replies': { name: req.body.name, text: req.body.text, parent: 2 }}},
+  Thread.findByIdAndUpdate(req.params.id, {
+    $push: { replies: { name: req.body.name, text: req.body.text, parent: req.body.parent }},
+    $inc: { count: 1}
+  },
   function(err, thread) {
     if (err) {
       console.log(err);
-      return res.status(500).json({ message : 'Post could not be saved.' });
+      return res.status(500).json({ message : 'Post could not be saved into database.' });
     }
-    console.log(thread);
+    if (!thread) {
+      return res.status(404).json({ message: 'Thread not found' });
+    }
     res.status(201).json(thread);
   });
 
@@ -174,6 +177,26 @@ router.route('/:id/posts')
       res.location('/posts/' + result.id);
       res.status(201).json(result);
     });*/
+});
+
+// Threads can be voted to the front page.
+router.route('/:id/posts/:postid/upvote')
+.post(function(req, res) {
+  var threadid = req.params.id;
+  var postid = req.params.postid;
+  var ip = req.connection.remoteAddress;
+  var selector1 = {}, selector2 = {};
+  var operators = {};
+  selector1['replies.' + postid + '.votes.positive'] = ip;
+  selector2['replies.' + postid + '.votes.count'] = 1;
+  operators['$addToSet'] = selector1;
+  operators['$inc'] = selector2;
+  Thread.update(threadid, operators, function(err, update) {
+    if (err) return res.status(500).json({ message : 'Internal Server Error' });
+    if (!update.ok) return res.status(404).json({ message: 'Thread not found' });
+    //if (update.nModified)
+    res.status(204).json();
+  });
 });
 
 router.route('/:id/votes')
