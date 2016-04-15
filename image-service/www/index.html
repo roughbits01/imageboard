@@ -42,22 +42,33 @@
     </div>
   </div>
   <div id="id01" class="w3-modal">
-    <div class="w3-modal-content w3-card-8 w3-animate-zoom">
+    <div class="w3-modal-content w3-card-8 w3-animate-zoom" style="max-width:auto">
       <header class="w3-container">
         <span onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn">×</span>
-        <h2>
-          Preview
-          <span class="w3-tooltip fa fa-star action pin">
-            <span class="w3-text w3-tag">Watch</span>
-          </span>
-        </h2>
+       <h4>Hood Watch</h4>
       </header>
-      <div class="w3-container">
-        <img id="img01" style="width:100%">
+      <div class="w3-row w3-container">
+        <div class="w3-twothird">
+          <img id="img01" style="width:100%">
+        </div>
+        <div class="w3-third w3-padding">
+          <ul class="w3-ul">
+            <li>
+              <h3>
+                Palette<span class="w3-tooltip fa fa-star action pin"></span>
+              </h3>
+              <colors data="[ '#30232a', '#7d99b0', '#e5c6a4', '#846a61', '#e1636e', '#4f414b', '#c1a188', '#f2eded' ]"></colors>
+            </li>
+            <li>
+            </li>
+            <li>
+            </li>
+          </ul>
+
+        </div>
       </div>
-      <!--<footer class="w3-container">
-        <p>Modal Footer</p>
-      </footer>-->
+      <footer class="w3-container">
+      </footer>
     </div>
   </div>
   <div id="id02" class="w3-modal">
@@ -83,20 +94,20 @@
   </div>
   <div id="id03" class="w3-modal">
     <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:600px">
-      <header class="w3-container w3-border-bottom">
+      <header class="w3-container">
         <span onclick="document.getElementById('id03').style.display='none'" class="w3-closebtn">×</span>
         <h4>New Thread</h4>
       </header>
       <div class="w3-container">
         <div class="w3-section">
           <label><b>Title</b></label>
-          <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="I love cats">
+          <input class="w3-input w3-margin-bottom" type="text" placeholder="I love cats">
           <label><b>Content</b> (optional)</label>
-          <textarea class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Because meow"></textarea>
+          <textarea class="w3-input w3-margin-bottom" type="text" placeholder="Because meow"></textarea>
           <label><b>Image</b></label>
-          <input class="w3-input w3-border w3-margin-bottom" type="file">
+          <input class="w3-input w3-margin-bottom" type="file">
           <label><b>Board</b></label>
-          <select class="w3-select w3-border" name="option">
+          <select class="w3-select" name="option">
             <option value="" disabled selected>Choose your option</option>
             <option value="1">Option 1</option>
             <option value="2">Option 2</option>
@@ -111,13 +122,13 @@
     </div>
   </div>
   <!-- Page Container -->
-  <nav class="w3-sidenav w3-card-2" style="width:200px">
+  <!--<nav class="w3-sidenav w3-card-2" style="width:200px">
     <a class="w3-padding w3-green" href="javascript:void(0)">Home</a>
     <a class="w3-padding" href="javascript:void(0)">About</a>
     <a class="w3-padding" href="javascript:void(0)">Contact</a>
     <a class="w3-padding" href="javascript:void(0)">Support</a>
-  </nav>
-  <div ng-view class="w3-animate-left" style="margin-top:54px;margin-left:200px;">
+  </nav>-->
+  <div ng-view class="w3-animate-left" style="margin-top:54px;">
 
   </div>
 
@@ -196,5 +207,6 @@
   <script src="localService.js"></script>
   <script src="controllers/threads.js"></script>
   <script src="controllers/thread.js"></script>
+  <script src="directives/colors.js"></script>
 </body>
 </html>

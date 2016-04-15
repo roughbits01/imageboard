@@ -1,13 +1,10 @@
 {
-  "name": "www",
-  "authors": [
-    "roughbits01 <marwen.azouzi@gmail.com>"
-  ],
+  "name": "image_server",
   "description": "",
-  "main": "",
+  "main": "index.js",
+  "license": "ISC",
+  "homepage": "https://github.com/roughbits01/imageboard",
   "moduleType": [],
-  "license": "MIT",
-  "homepage": "",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -16,11 +13,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.5.0",
-    "font-awesome": "fontawesome#~4.5.0",
-    "bootstrap": "~3.3.6",
-    "Chart.js": "~1.0.2",
-    "angular-route": "~1.5.0",
-    "instantclick": "~3.1.0"
+    "angular": "angularjs#^1.5.3",
+    "font-awesome": "^4.5.0",
+    "angular-route": "^1.5.3"
   }
 }

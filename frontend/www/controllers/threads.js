@@ -20,7 +20,7 @@ angular.module('myApp').controller('ThreadsController', function ($scope, $http,
   var pins = LocalService.getObject('pinned');
   if (pins) $scope.pinned = pins;
 
-  $http.get('/photos').then(function(response) {
+  $http.get('http://localhost:3003/photos').then(function(response) {
     $scope.images = response.data
     console.log($scope.images);
   });

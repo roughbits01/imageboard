@@ -1,14 +1,221 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-  <meta charset="UTF-8">
-  <title>My App</title>
-
-  <link href="css/index.css" rel="stylesheet"/>
+<head>
+  <title>My Web</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="w3.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="index.css">
 </head>
-<body>
-  <div id="app"></div>
+<body ng-app="myApp" ng-cloak>
+  <!-- Navbar -->
+  <div class="w3-top">
+    <ul class="w3-navbar w3-padding-8 w3-black">
+      <li><a href="#/"><i class="fa fa-home w3-large"></i></a></li>
+      <li><a href="#boards">Boards</a></li>
+      <li class="w3-right">
+        <button class="w3-btn w3-margin-right w3-green w3-hover-opacity" onclick="document.getElementById('id03').style.display='block'">
+          <i class="fa fa-plus"></i> New Thread
+        </button>
+      </li>
+      <!--<li class="w3-right">
+        <div>
+          <input class="w3-input w3-animate-input" style="width:30%" type="text" autocomplete="off" spellcheck="false" placeholder="Search posts...">
+          <button class="w3-btn w3-blue w3-hover-"><i class="fa fa-search"></i></button>
+        </div>
+      </li>-->
+    </ul>
+  </div>
+  <!-- Modal -->
+  <div id="id00" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:400px">
+      <header class="w3-container">
+        <span onclick="document.getElementById('id00').style.display='none'" class="w3-closebtn" style="color: #222;">×</span>
+        <h2>Report Post</h2>
+      </header>
+      <div class="w3-container">
+        <h5>Would you really like to report this post?</h5>
+      </div>
+      <footer class="w3-container w3-border-top w3-padding-8">
+        <button type="button" class="w3-btn w3-red w3-right">Report</button>
+      </footer>
+    </div>
+  </div>
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-zoom" style="max-width:auto">
+      <header class="w3-container">
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn">×</span>
+       <h4>Hood Watch</h4>
+      </header>
+      <div class="w3-row w3-container">
+        <div class="w3-twothird">
+          <img id="img01" style="width:100%">
+        </div>
+        <div class="w3-third w3-padding">
+          <ul class="w3-ul">
+            <li>
+              <h3>
+                Palette<span class="w3-tooltip fa fa-star action pin"></span>
+              </h3>
+              <colors data="[ '#30232a', '#7d99b0', '#e5c6a4', '#846a61', '#e1636e', '#4f414b', '#c1a188', '#f2eded' ]"></colors>
+            </li>
+            <li>
+            </li>
+            <li>
+            </li>
+          </ul>
 
-  <script src="bundle.js"></script>
+        </div>
+      </div>
+      <footer class="w3-container">
+      </footer>
+    </div>
+  </div>
+  <div id="id02" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-top">
+      <header class="w3-container">
+        <span onclick="document.getElementById('id02').style.display='none'" class="w3-closebtn">×</span>
+        <h4>Popular Posts</h4>
+      </header>
+      <div class="w3-container">
+        <ul class="w3-ul w3-white">
+          <li ng-repeat="p in pinned" class="w3-padding-16 w3-hover-light-grey">
+            <span title="This answer is useful" class="w3-closebtn w3-padding w3-margin-right w3-large w3-hover-text-red">×</span>
+            <img ng-src="{{p}}" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+            <span class="w3-large">Lorem</span><br>
+            <span>Sed mattis nunc</span>
+          </li>
+        </ul>
+      </div>
+      <footer class="w3-container w3-border-top w3-padding-8">
+        <button onclick="document.getElementById('id02').style.display='none'" type="button" class="w3-btn w3-red w3-right">Cancel</button>
+      </footer>
+    </div>
+  </div>
+  <div id="id03" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:600px">
+      <header class="w3-container">
+        <span onclick="document.getElementById('id03').style.display='none'" class="w3-closebtn">×</span>
+        <h4>New Thread</h4>
+      </header>
+      <div class="w3-container">
+        <div class="w3-section">
+          <label><b>Title</b></label>
+          <input class="w3-input w3-margin-bottom" type="text" placeholder="I love cats">
+          <label><b>Content</b> (optional)</label>
+          <textarea class="w3-input w3-margin-bottom" type="text" placeholder="Because meow"></textarea>
+          <label><b>Image</b></label>
+          <input class="w3-input w3-margin-bottom" type="file">
+          <label><b>Board</b></label>
+          <select class="w3-select" name="option">
+            <option value="" disabled selected>Choose your option</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+          </select>
+        </div>
+      </div>
+      <footer class="w3-container w3-border-top w3-padding-8">
+        <i>Please read the <a href="">Rules</a> and <a href="">FAQ</a> before posting.</i>
+        <button class="w3-btn w3-right w3-green">Post</button>
+      </footer>
+    </div>
+  </div>
+  <!-- Page Container -->
+  <!--<nav class="w3-sidenav w3-card-2" style="width:200px">
+    <a class="w3-padding w3-green" href="javascript:void(0)">Home</a>
+    <a class="w3-padding" href="javascript:void(0)">About</a>
+    <a class="w3-padding" href="javascript:void(0)">Contact</a>
+    <a class="w3-padding" href="javascript:void(0)">Support</a>
+  </nav>-->
+  <div ng-view class="w3-animate-left" style="margin-top:54px;">
+
+  </div>
+
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+  <script>
+  function onClick(element) {
+    var image = document.getElementById("img01");
+    var downloadingImage = new Image();
+    downloadingImage.onload = function(){
+      console.log('loaded');
+      image.src = this.src;
+    };
+
+    downloadingImage.src = element.src.replace('thumbnail', 'original');
+    /*var isGif = element.src.substr(element.src.length - 3) == 'gif';
+    console.log(element.src.substr(element.src.length - 3));
+    if (isGif) {
+      element.src = element.src.replace('thumbnail', 'original').replace('.jpg', '.gif');
+    } else {
+      document.getElementById("img01").src = element.src.replace('thumbnail', 'original');
+      document.getElementById("id01").style.display = "block";
+    }*/
+  }
+  var app = angular.module("myApp", ['ngRoute']);
+  app.config(function($routeProvider, $locationProvider) {
+    $routeProvider.when('/threads/:id', {
+      templateUrl: 'templates/thread.html',
+      controller: 'ThreadController'
+    })
+    .when('/', {
+      templateUrl: 'templates/threads.html',
+      controller: 'ThreadsController'
+    });
+  });
+  app.filter('range', function() {
+    return function(n) {
+      var res = [];
+      for (var i = 0; i < n; i++) {
+        res.push(i);
+      }
+      return res;
+    };
+  });
+  app.filter('shorten', function () {
+    return function (value, wordwise, max, tail) {
+      if (!value) return '';
+
+      max = parseInt(max, 10);
+      if (!max) return value;
+      if (value.length <= max) return value;
+
+      value = value.substr(0, max);
+      if (wordwise) {
+        var lastspace = value.lastIndexOf(' ');
+        if (lastspace != -1) {
+          value = value.substr(0, lastspace);
+        }
+      }
+
+      return value + (tail || ' …');
+    };
+  });
+  app.filter('elapsed', function(){
+    return function(date) {
+      if (!date) return;
+      var time = Date.parse(date),
+      now = new Date().getTime(),
+      diff = now - time,
+      seconds = Math.floor(diff / 1000),
+      minutes = Math.floor(seconds / 60),
+      hours = Math.floor(minutes / 60),
+      days = Math.floor(hours / 24);
+      if (days > 1) return days + " days ago";
+      else if (days == 1) return "1 day ago";
+      else if (hours > 1) return hours + " hours ago";
+      else if (hours == 1) return "one hour ago";
+      else if (minutes > 1) return minutes + " minutes ago";
+      else if (minutes == 1) return "one minute ago";
+      return "few seconds ago";
+    }
+  });
+  </script>
+  <script src="localService.js"></script>
+  <script src="controllers/threads.js"></script>
+  <script src="controllers/thread.js"></script>
+  <script src="directives/colors.js"></script>
 </body>
 </html>

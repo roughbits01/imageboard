@@ -11,7 +11,7 @@ var multer  = require('multer');
 var sharp = require('sharp');
 var bodyParser = require('body-parser');
 var compression = require('compression');
-//var attention = require('attention');
+var attention = require('attention');
 var request = require('request');
 var async = require('async');
 var express = require('express');
@@ -30,15 +30,20 @@ if (app.get('env') === 'development') {
 
 // compress all requests
 app.use(compression());
-
 app.use(bodyParser.urlencoded({ extended: true }));// to support URL-encoded bodies.
 app.use(bodyParser.json());// to support JSON-encoded bodies.
+app.use(function(req, res, next) {// Allow cors
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
 app.get('/photos', function(req, res, next) {
   fs.readdir('uploads/thumbnail', (err, data) => {
     if (err) throw err;
     var images = data.map(function(e) {
-      return 'uploads/thumbnail/' + e;
+      return 'http://localhost:3003/uploads/thumbnail/' + e;
     });
     res.json(images);
   });
@@ -149,19 +154,19 @@ app.post('/photos/uploadurl', function (req, res, next) {
         // output.jpg is a 300 pixels wide and 200 pixels high image
         // containing a scaled and cropped version of input.jpg
         // Build a color palette from an image
-        /*attention(thumbnail)
+        attention(thumbnail)
         .swatches(8)
         .palette(function(err, palette) {
           if (err) throw err;
           console.log('It took me ' + palette.duration + 'ms to find the palette');
-          palette.swatches.forEach(function(swatch) {
-            console.log(swatch);
-          });
-        });*/
+          var colors = palette.swatches.map(swatch => swatch.css);
+          console.log(colors);
+        });
       });
     });
   });
 });
+
 
 app.use("/", express.static(__dirname + "/"));
 app.use('/', express.static('www'));

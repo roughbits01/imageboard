@@ -1,0 +1,19 @@
+<div class="w3-row">
+  <div class="w3-col w3-padding-small" style="width:32px">
+    <span class="fa fa-chevron-up action like"></span>
+    <b class="w3-text-grey">{{post.votes.count? post.votes.count: 0}}</b>
+    <span class="fa fa-chevron-down action like"></span>
+  </div>
+  <div class="w3-rest w3-padding-small">
+    <a href="" class="w3-tiny">[-]</a>
+    <b class="w3-small">{{post.name? post.name: "anonymous"}}</b>
+    <span class="w3-tiny w3-text-grey" title="{{post.posted}}">{{post.posted | elapsed}}</span><br>
+    {{post.text}}<br>
+    <span class="w3-tiny">
+      <a href="#/posts/{{threadid}}/{{post.id}}">permalink</a> <a href="">parent</a> <a href="" onclick="document.getElementById('id00').style.display='block'">report</a> <a href="">reply</a>
+    </span>
+  </div>
+</div>
+<ul class="w3-ul" id="{{post.id}}">
+  <li ng-repeat="post in post.replies" ng-include="'templates/comment.html'">{{post.text}}</li>
+</ul>

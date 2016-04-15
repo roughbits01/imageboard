@@ -1,0 +1,30 @@
+.action {
+  color: #aaa;
+  cursor:pointer;
+  transition: color .2s ease-in;
+}
+
+.actions {
+  opacity: 0;
+}
+
+.parent:hover .actions {
+  opacity: 0.6;
+  transition: opacity .3s ease-in;
+}
+
+.report:hover {
+  color: #B60707;
+}
+
+.like:hover {
+  color: #FF0080;
+}
+
+.pin:hover {
+  color: #F8CA00;
+}
+
+.pinned {
+  background-color:#444;
+}
