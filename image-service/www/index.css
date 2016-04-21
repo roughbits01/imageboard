@@ -28,3 +28,12 @@
 .pinned {
   background-color:#444;
 }
+
+label.myLabel input[type="file"] {
+    position: fixed;
+    top: -1000px;
+}
+
+textarea {
+   resize: none;
+}

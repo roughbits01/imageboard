@@ -57,7 +57,7 @@
               <h3>
                 Palette<span class="w3-tooltip fa fa-star action pin"></span>
               </h3>
-              <colors data="[ '#30232a', '#7d99b0', '#e5c6a4', '#846a61', '#e1636e', '#4f414b', '#c1a188', '#f2eded' ]"></colors>
+              <colors data="[ '#336157', '#adafa2', '#522b35', '#8c8664', '#168988', '#94485a', '#4f8f69', '#d5d3d2' ]"></colors>
             </li>
             <li>
             </li>
@@ -99,12 +99,19 @@
         <h4>New Thread</h4>
       </header>
       <div class="w3-container">
-        <div class="w3-section">
-          <label><b>Title</b></label>
-          <input class="w3-input w3-margin-bottom" type="text" placeholder="I love cats">
-          <label><b>Content</b> (optional)</label>
-          <textarea class="w3-input w3-margin-bottom" type="text" placeholder="Because meow"></textarea>
-          <label><b>Image</b></label>
+        <div class="w3-row-padding">
+          <div class="w3-col" style="width:150px">
+            <label class="myLabel">
+              <input type="file" required/>
+              <img class="w3-hover-opacity" style="width:100%; cursor:pointer;" src="/uploads/thumbnail/fba1e702ad0a1d9f45c28c8b338cf5d7.jpg">
+            </label>
+          </div>
+          <div class="w3-rest">
+            <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="I love cats">
+            <textarea class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Because meow"></textarea>
+          </div>
+        </div>
+          <!--<label><b>Image</b></label>
           <input class="w3-input w3-margin-bottom" type="file">
           <label><b>Board</b></label>
           <select class="w3-select" name="option">
@@ -112,8 +119,7 @@
             <option value="1">Option 1</option>
             <option value="2">Option 2</option>
             <option value="3">Option 3</option>
-          </select>
-        </div>
+          </select>-->
       </div>
       <footer class="w3-container w3-border-top w3-padding-8">
         <i>Please read the <a href="">Rules</a> and <a href="">FAQ</a> before posting.</i>
