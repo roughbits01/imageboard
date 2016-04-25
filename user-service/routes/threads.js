@@ -27,38 +27,13 @@ var router = express.Router();
  */
 router.route('/')
 .get(function(req, res) {
-  Thread.find().limit(50).exec(function(err, threads) {
+  Thread.find({}, '-replies').limit(100).exec(function(err, threads) {
     if (err) {
       return res.status(500).json({ message : 'Threads could not be retrieved from database. Please try again in a few moments.' });
     }
     res.json(threads);
   });
 })
-/**
- * POST /threads
- * List all active threads.
- */
-.post(function(req, res) {
-  Board.count({ name: req.body.name }, function(err, count) {
-    if (err) return res.status(500).json({ message : 'Internal Server Error' });
-    if (count > 0) {
-      return res.status(409).send({ message: 'Board with that name already exists' });
-    }
-    var board = new Board({
-      name: req.body.name,
-      description: req.body.description,
-    });
-
-    board.save(function(err, result) {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({ message : 'There was a problem adding the information to the database. Please try again in a moment.' });
-      }
-      res.location('/boards/' + result.name);
-      res.status(201).json(result);
-    });
-  });
-});
 
 /**
  * GET /random

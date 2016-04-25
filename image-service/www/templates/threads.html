@@ -18,7 +18,7 @@
       <div class="w3-card-2">
         <div class="w3-display-container parent">
           <img ng-src="{{images[r * 6 + c]}}" onclick="onClick(this)" style="width:100%; cursor:pointer;">
-          <span class="w3-display-topright w3-margin-2 w3-padding-2 w3-black w3-round"><i>GIF</i></span>
+          <!--<span class="w3-display-topright w3-margin-2 w3-padding-2 w3-black w3-round"><i>GIF</i></span>-->
           <span class="w3-display-topleft w3-black w3-opacity actions" style="width:100%;">
             <span class="w3-right w3-margin-4 w3-large fa fa-thumb-tack action pin" ng-click="pin(r * 6 + c)"></span>
             <span class="w3-margin-4 w3-large fa fa-flag action report" onclick="document.getElementById('id00').style.display='block'"></span>
@@ -59,6 +59,7 @@
           </a>
         </div>
         <div class="w3-rest w3-padding-small">
+          <span class="w3-right">{{$index + 1}}</span>
           <span class="w3-large">Lorem</span><br>
           <span>Sed mattis nunc</span>
         </div>

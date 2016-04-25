@@ -1,14 +1,9 @@
 angular.module('myApp').controller('ThreadsController', function ($scope, $http, LocalService) {
   $scope.random = function() {
-    return 12;// Math.floor((Math.random()*500)+1);
+    return Math.floor((Math.random()*500)+1);
   }
 
-  $scope.colors = [
-    '#404948', '#948c86', '#616650', '#c5bebd',
-    '#4f564c', '#78775e', '#dad4d2', '#ada6a6'
-  ];
-
-  $scope.list = false;
+  $scope.list = true;
 
   $scope.showList = function(flag) {
     $scope.list = flag;

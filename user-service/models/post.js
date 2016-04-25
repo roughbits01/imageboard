@@ -5,8 +5,8 @@ var postSchema = new mongoose.Schema({
 	text: { type: String, maxLength: 200, trim: true, required: true },
 	code: { type: String, maxLength: 32},
   image: {
-		name: String,
-		ext: { type: String, enum: ['.jpg','.png', '.gif']}
+		id: String,
+		ext: { type: String, enum: ['.jpg','.png', '.gif'] }
 	},
   voteCount: { type : Number },
 	votes: [{ user : mongoose.Schema.ObjectId , type: Number }],

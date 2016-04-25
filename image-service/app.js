@@ -11,7 +11,7 @@ var multer  = require('multer');
 var sharp = require('sharp');
 var bodyParser = require('body-parser');
 var compression = require('compression');
-var attention = require('attention');
+//var attention = require('attention');
 var request = require('request');
 var async = require('async');
 var express = require('express');
@@ -40,11 +40,9 @@ app.use(function(req, res, next) {// Allow cors
 });
 
 app.get('/photos', function(req, res, next) {
-  fs.readdir('uploads/thumbnail', (err, data) => {
+  fs.readdir('uploads/thumbnail/small', (err, data) => {
     if (err) throw err;
-    var images = data.map(function(e) {
-      return 'http://localhost:3003/uploads/thumbnail/' + e;
-    });
+    var images = data.map(e => 'http://localhost:3003/uploads/thumbnail/big/' + e);
     res.json(images);
   });
 });
@@ -83,30 +81,45 @@ var uploader = multer({
     }
   }),
   limits: {
-    files: 1,
+    //files: 1,
     fileSize: maxSize
   }
 });
 
-app.post('/photos/upload', uploader.single('photo'), function (req, res, next) {
-  sharp('uploads/original/' + req.file.filename)
-  .metadata(function(err, metadata) { console.log(metadata) })
-  .resize(300, 200)
-  .withoutEnlargement()
-  .toFile('uploads/thumbnail/' + req.file.filename, function(err) {
-    // output.jpg is a 300 pixels wide and 200 pixels high image
-    // containing a scaled and cropped version of input.jpg
-    /*attention('uploads/thumbnail/' + req.file.filename)
-    .swatches(8)
-    .palette(function(err, palette) {
-      console.log('It took me ' + palette.duration + 'ms to find the palette');
-      palette.swatches.forEach(function(swatch) {
-        console.log(swatch);
-      });
-    });*/
+app.post('/photos/upload', uploader.array('photo'), function (req, res, next) {
+  var files = req.files;
+  files.forEach(function(file) {
+    console.log(file.filename + ': started');
+    sharp('uploads/original/' + file.filename)
+    //.metadata(function(err, metadata) { console.log(metadata) })
+    //.withoutEnlargement()
+    .jpeg()
+    .resize(300, 200)
+    .toFile('uploads/thumbnail/big/' + file.filename, function(err) {
+      // output.jpg is a 300 pixels wide and 200 pixels high image
+      // containing a scaled and cropped version of input.jpg
+      console.log(file.filename + ': big finished');
+      /*attention('uploads/thumbnail/' + req.file.filename)
+      .swatches(8)
+      .palette(function(err, palette) {
+        console.log('It took me ' + palette.duration + 'ms to find the palette');
+        palette.swatches.forEach(function(swatch) {
+          console.log(swatch);
+        });
+      });*/
+    })
+    .resize(256, 256)
+    .toFile('uploads/thumbnail/square/' + file.filename, function(err) {
+      console.log(file.filename + ': square finished');
+    })
+    .resize(120, 80)
+    .toFile('uploads/thumbnail/small/' + file.filename, function(err) {
+      console.log(file.filename + ': small finished');
+    });
   });
 
-  res.redirect('uploads/original/' + req.file.filename);
+  res.json();
+  //res.redirect('uploads/original/' + req.file.filename);
 });
 
 //request.defaults({'proxy':'http://55.1.35.226:8080'});
@@ -154,14 +167,14 @@ app.post('/photos/uploadurl', function (req, res, next) {
         // output.jpg is a 300 pixels wide and 200 pixels high image
         // containing a scaled and cropped version of input.jpg
         // Build a color palette from an image
-        attention(thumbnail)
+        /*attention(thumbnail)
         .swatches(8)
         .palette(function(err, palette) {
           if (err) throw err;
           console.log('It took me ' + palette.duration + 'ms to find the palette');
           var colors = palette.swatches.map(swatch => swatch.css);
           console.log(colors);
-        });
+        });*/
       });
     });
   });

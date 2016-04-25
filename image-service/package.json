@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.0.0-rc.2",
-    "attention": "^0.1.1",
     "body-parser": "^1.15.0",
     "color": "^0.11.1",
     "compression": "^1.6.1",

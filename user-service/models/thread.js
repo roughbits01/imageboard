@@ -8,6 +8,7 @@ var threadSchema = new mongoose.Schema({
     name: { type: String, maxLength: 20, trim: true },
     text: { type: String, maxLength: 200, trim: true, required: true },
     parent: Number,
+    depth: Number,
     votes: {
       positive: [{ type: String }],// Number of upvotes.
       negative: [{ type: String }],//	Number of downvotes.

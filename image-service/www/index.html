@@ -30,21 +30,25 @@
   <div id="id00" class="w3-modal">
     <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:400px">
       <header class="w3-container">
-        <span onclick="document.getElementById('id00').style.display='none'" class="w3-closebtn" style="color: #222;">×</span>
-        <h2>Report Post</h2>
+        <span onclick="document.getElementById('id00').style.display='none'" class="w3-closebtn" style="color: #A0A5B0;">×</span>
+        <h3>Report Post</h3>
       </header>
       <div class="w3-container">
-        <h5>Would you really like to report this post?</h5>
+        <p>Would you really like to report this post?</p>
+        <input type="radio" name="spam" value="spam" checked> Spam<br>
+        <input type="radio" name="gender" value="female"> Personal and confidential information<br>
+        <input type="radio" name="gender" value="other"> Threatening, harassing, or inciting violence<br>
+        <textarea class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Other (max 100 characters)"></textarea>
       </div>
       <footer class="w3-container w3-border-top w3-padding-8">
-        <button type="button" class="w3-btn w3-red w3-right">Report</button>
+        <button type="button" class="w3-btn w3-red w3-right" onclick="document.getElementById('id00').style.display='none'">Report</button>
       </footer>
     </div>
   </div>
   <div id="id01" class="w3-modal">
     <div class="w3-modal-content w3-card-8 w3-animate-zoom" style="max-width:auto">
       <header class="w3-container">
-        <span onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn">×</span>
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn" style="color: #A0A5B0;">×</span>
        <h4>Hood Watch</h4>
       </header>
       <div class="w3-row w3-container">
@@ -95,15 +99,15 @@
   <div id="id03" class="w3-modal">
     <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:600px">
       <header class="w3-container">
-        <span onclick="document.getElementById('id03').style.display='none'" class="w3-closebtn">×</span>
+        <span onclick="document.getElementById('id03').style.display='none'" class="w3-closebtn" style="color: #A0A5B0;">×</span>
         <h4>New Thread</h4>
       </header>
       <div class="w3-container">
         <div class="w3-row-padding">
           <div class="w3-col" style="width:150px">
             <label class="myLabel">
-              <input type="file" required/>
-              <img style="width:100%; cursor:pointer;" src="/uploads/thumbnail/fba1e702ad0a1d9f45c28c8b338cf5d7.jpg">
+              <input type="file" multiple required/>
+              <img style="width:100%; cursor:pointer;" src="/www/resources/images/UploadFolder.png">
             </label>
           </div>
           <div class="w3-rest">
@@ -133,14 +137,14 @@
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script>
   function onClick(element) {
-    var isGif = element.src.substr(element.src.length - 3) == 'gif';
+    /*var isGif = element.src.substr(element.src.length - 3) == 'gif';
     console.log(element.src.substr(element.src.length - 3));
     if (isGif) {
       element.src = element.src.replace('thumbnail', 'original').replace('.jpg', '.gif');
-    } else {
-      document.getElementById("img01").src = element.src.replace('thumbnail', 'original');
+    } else {*/
+      document.getElementById("img01").src = element.src.replace('thumbnail', 'original').replace('.jpg', '.gif');
       document.getElementById("id01").style.display = "block";
-    }
+    //}
   }
   var app = angular.module("myApp", ['ngRoute']);
   app.config(function($routeProvider, $locationProvider) {
