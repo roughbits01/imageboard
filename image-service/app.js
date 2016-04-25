@@ -42,7 +42,7 @@ app.use(function(req, res, next) {// Allow cors
 app.get('/photos', function(req, res, next) {
   fs.readdir('uploads/thumbnail/small', (err, data) => {
     if (err) throw err;
-    var images = data.map(e => 'http://localhost:3003/uploads/thumbnail/big/' + e);
+    var images = data.map(e => '/uploads/thumbnail/big/' + e);
     res.json(images);
   });
 });
@@ -122,7 +122,7 @@ app.post('/photos/upload', uploader.array('photo'), function (req, res, next) {
   //res.redirect('uploads/original/' + req.file.filename);
 });
 
-//request.defaults({'proxy':'http://55.1.35.226:8080'});
+request.defaults({'proxy':'http://www-cache.ujf-grenoble.fr:3128'});
 
 app.post('/photos/uploadurl', function (req, res, next) {
   var url = req.body.url;
@@ -158,24 +158,16 @@ app.post('/photos/uploadurl', function (req, res, next) {
     request(url).pipe(fs.createWriteStream(filename)).on('close', function() {
       res.redirect('/' + filename);
 
-      var thumbnail = 'uploads/thumbnail/' + id + '.jpg';
       // Create thumbnail
       sharp(filename)
-      .metadata(function(err, metadata) { console.log(metadata) })
+      //.metadata(function(err, metadata) { console.log(metadata) })
+      .jpeg()
       .resize(300, 200)
-      .toFile(thumbnail, function(err) {
-        // output.jpg is a 300 pixels wide and 200 pixels high image
-        // containing a scaled and cropped version of input.jpg
-        // Build a color palette from an image
-        /*attention(thumbnail)
-        .swatches(8)
-        .palette(function(err, palette) {
-          if (err) throw err;
-          console.log('It took me ' + palette.duration + 'ms to find the palette');
-          var colors = palette.swatches.map(swatch => swatch.css);
-          console.log(colors);
-        });*/
-      });
+      .toFile('uploads/thumbnail/big/' + id + '.jpg', function(err) {})
+      .resize(256, 256)
+      .toFile('uploads/thumbnail/square/' + id + '.jpg', function(err) {})
+      .resize(120, 80)
+      .toFile('uploads/thumbnail/small/' + id + '.jpg', function(err) {});
     });
   });
 });
