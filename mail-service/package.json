@@ -1,0 +1,16 @@
+{
+  "name": "mail-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amqp": "^0.2.4",
+    "morgan": "^1.7.0",
+    "node-mailer": "^0.1.1"
+  }
+}

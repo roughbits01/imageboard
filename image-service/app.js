@@ -59,7 +59,7 @@ var exts = {
   'image/gif' : '.gif'
 };
 
-var maxSize = 4 * 1024 * 1024;
+var maxSize = 40 * 1024 * 1024;
 
 var uploader = multer({
   fileFilter: function(req, file, cb) {

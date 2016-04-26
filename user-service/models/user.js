@@ -31,10 +31,11 @@ var userSchema = new Schema({
     enum: ['user', 'gold', 'mod', 'admin', 'founder'],
     select: false
   },
+  reputation: Number,
   picture: String,
   created: { type: Date, default: Date.now, select: false },
   updated: { type: Date, select: false },
-  //last_access_date
+  lastAccess: { type: Date, default: Date.now },
   __v: { type: Number, select: false} // Hide version property.
 });
 
