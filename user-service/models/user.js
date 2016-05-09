@@ -26,6 +26,13 @@ var userSchema = new Schema({
     required: true,
     select: false
   },
+  /**
+   * A moderator has the power to remove posts and comments from a subreddit,
+   * mark posts and comments as spam, ban a user from posting, and invite
+   * other users to become moderators. The user that creates the subreddit
+   * is automatically assigned as the top moderator and can override
+   * any action taken by any other moderators. 
+   */
   role: {
     type: String,
     enum: ['user', 'gold', 'mod', 'admin', 'founder'],

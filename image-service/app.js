@@ -59,6 +59,12 @@ var exts = {
   'image/gif' : '.gif'
 };
 
+var magic = {
+  jpg: 'ffd8ffe0',
+  png: '89504e47',
+  gif: '47494638'
+};
+
 var maxSize = 40 * 1024 * 1024;
 
 var uploader = multer({
@@ -138,6 +144,8 @@ app.post('/photos/uploadurl', function (req, res, next) {
 
     var status = response.statusCode;
     if (status != 200 && status != 304) {
+      console.log(url);
+      console.log(status);
       return res.status(400).json({ message: 'Could not access the URL' });
     }
 
@@ -155,7 +163,26 @@ app.post('/photos/uploadurl', function (req, res, next) {
     var id = crypto.pseudoRandomBytes(16).toString('hex');
     var filename = 'uploads/original/' + id + ext;
 
-    request(url).pipe(fs.createWriteStream(filename)).on('close', function() {
+    var options = {
+      method: 'GET',
+      url: url,
+      encoding: null // keeps the body as buffer
+    };
+
+    var r = request(options, function (error, response, body) {
+      /*var magic = body.toString('hex', 0, 4);
+      res.json(magic);
+      if (magic !== magic.jpg && magic !== magic.png && magic !== magic.gif) {
+        r.abort();
+        console.log('aborted');
+        console.log(magic);
+      } else {
+        console.log('image');
+        r.abort();
+      }*/
+    });
+
+    r.pipe(fs.createWriteStream(filename)).on('close', function() {
       res.redirect('/' + filename);
 
       // Create thumbnail

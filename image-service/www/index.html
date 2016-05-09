@@ -68,7 +68,6 @@
             <li>
             </li>
           </ul>
-
         </div>
       </div>
       <footer class="w3-container">
@@ -132,7 +131,6 @@
   <div ng-view class="w3-animate-left" style="margin-top:54px;">
 
   </div>
-
   <script src="bower_components/angular/angular.min.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script>
@@ -147,7 +145,7 @@
     //}
   }
   var app = angular.module("myApp", ['ngRoute']);
-  app.config(function($routeProvider, $locationProvider) {
+  app.config(function($routeProvider, $locationProvider, $compileProvider, $httpProvider) {
     $routeProvider.when('/threads/:id', {
       templateUrl: 'templates/thread.html',
       controller: 'ThreadController'
@@ -156,6 +154,8 @@
       templateUrl: 'templates/threads.html',
       controller: 'ThreadsController'
     });
+    $compileProvider.debugInfoEnabled(false);
+    $httpProvider.useApplyAsync(true);
   });
   app.filter('range', function() {
     return function(n) {
@@ -209,5 +209,6 @@
   <script src="controllers/threads.js"></script>
   <script src="controllers/thread.js"></script>
   <script src="directives/colors.js"></script>
+  <script src="services/threadService.js"></script>
 </body>
 </html>

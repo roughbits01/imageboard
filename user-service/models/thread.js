@@ -4,34 +4,33 @@ var threadSchema = new mongoose.Schema({
   title: { type: String, maxLength: 50, trim: true, required: true },
   text: { type: String, maxLength: 1000, trim: true },
   name: { type: String, maxLength: 20, trim: true },
+  replyCount: { type: Number, default: 0 },
   replies: [{
     name: { type: String, maxLength: 20, trim: true },
     text: { type: String, maxLength: 200, trim: true, required: true },
     parent: Number,
-    depth: Number,
+    // We want your users to be able to vote on submitted stories..
+    // Store the vote information in the object itself.
+    // * Make sure that each user gets just one vote.
+    // * Keep a counter cache on the number of votes.
     votes: {
-      positive: [{ type: String }],// Number of upvotes.
-      negative: [{ type: String }],//	Number of downvotes.
-      count: Number
+      positive: [ String ],// List of upvoters.
+      negative: [ String ],//	List of downvoters.
+      count: { Number, default: 0 }// An integer caching the number of votes.
     },
     posted: { type: Date, default: Date.now }
   }],
-  count: Number,
+  votes: {
+    positive: [ String ],// List of upvoters.
+    negative: [ String ],//	List of downvoters.
+    count: { Number, default: 0 }// An integer caching the number of votes.
+  },
   board: { type : String },
   views: Number,// The total number of views.
   created: { type: Date, default: Date.now },
-  locked: Boolean,
+  locked: { type: Boolean, default: false },
   nsfw: Boolean,// Indicates if the thread has been marked as nsfw or not.
   __v: { type: Number, select: false} // Hide version property.
-});
-
-threadSchema.post('findById', function(doc) {
-  console.log("Post Find Id");
-});
-
-threadSchema.virtual('replies.count')
-.get(function() {
-	return this.replies.length;
 });
 
 /**

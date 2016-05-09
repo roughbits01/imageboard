@@ -123,7 +123,17 @@ router.route('/me/forgot')
     res.header("Cache-Control", "public, max-age=60");
     res.json(user);
   });
-})
+});
+
+// Redis call fifo
+/*router.route('/me/threads/visited/latests')
+.get(function(req, res) {
+  User.findById(req.user, function(err, user) {
+    if (err) return res.status(500).json({ message : 'Internal Server Error' });
+    res.header("Cache-Control", "public, max-age=60");
+    res.json(user);
+  });
+})*/
 
 router.route('/search/')
 // Return all users when we get a GET request to /api/users.
@@ -162,6 +172,18 @@ router.route('/exists/:username')
   User.count({ name: req.params.username }, function (err, count) {
     if (err) return res.status(500).json({ message : 'Internal Server Error' });
     res.json(count > 0);
+  });
+});
+
+/**
+ * Check whether a username is available for registration.
+ */
+router.route('/search/:str')
+.get(function(req, res) {
+  var str = req.params.str;
+  User.find({ name: { $regex: /^str/ }}, function (err, users) {
+    if (err) return res.status(500).json({ message : 'Internal Server Error' });
+    res.json(users);
   });
 });
 

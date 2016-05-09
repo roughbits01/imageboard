@@ -17,8 +17,12 @@
   color: #B60707;
 }
 
-.like:hover {
+.upvote:hover {
   color: #FF0080;
+}
+
+.downvote:hover {
+  color: #369FBF;
 }
 
 .pin:hover {
