@@ -4,7 +4,12 @@ var threadSchema = new mongoose.Schema({
   title: { type: String, maxLength: 50, trim: true, required: true },
   text: { type: String, maxLength: 1000, trim: true },
   name: { type: String, maxLength: 20, trim: true },
-  replyCount: { type: Number, default: 0 },
+  board: { type : String },
+  views: { type: Number, default: 0 },// The total number of views.
+  created: { type: Date, default: Date.now },
+  locked: { type: Boolean, default: false },
+  nsfw: Boolean,// Indicates if the thread has been marked as nsfw or not.
+  replyCount: { type: Number, default: 0 },// Counter cache on the number of replies.
   replies: [{
     name: { type: String, maxLength: 20, trim: true },
     text: { type: String, maxLength: 200, trim: true, required: true },
@@ -25,11 +30,6 @@ var threadSchema = new mongoose.Schema({
     negative: [ String ],//	List of downvoters.
     count: { Number, default: 0 }// An integer caching the number of votes.
   },
-  board: { type : String },
-  views: Number,// The total number of views.
-  created: { type: Date, default: Date.now },
-  locked: { type: Boolean, default: false },
-  nsfw: Boolean,// Indicates if the thread has been marked as nsfw or not.
   __v: { type: Number, select: false} // Hide version property.
 });
 

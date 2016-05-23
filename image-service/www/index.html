@@ -14,8 +14,8 @@
       <li><a href="#/"><i class="fa fa-home w3-large"></i></a></li>
       <li><a href="#boards">Boards</a></li>
       <li class="w3-right">
-        <button class="w3-btn w3-margin-right w3-green w3-hover-opacity" onclick="document.getElementById('id03').style.display='block'">
-          <i class="fa fa-plus"></i> New Thread
+        <button class="w3-btn w3-margin-right w3-green w3-hover-opacity" onclick="document.getElementById('id04').style.display='block'">
+          <i class="fa fa-plus"></i> Post Link
         </button>
       </li>
       <!--<li class="w3-right">
@@ -117,6 +117,21 @@
       </div>
       <footer class="w3-container w3-border-top w3-padding-8">
         <i>Please read the <a href="">Rules</a> and <a href="">FAQ</a> before posting.</i>
+        <button class="w3-btn w3-right w3-green">Post</button>
+      </footer>
+    </div>
+  </div>
+  <div id="id04" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:600px">
+      <header class="w3-container">
+        <span onclick="document.getElementById('id04').style.display='none'" class="w3-closebtn" style="color: #A0A5B0;">×</span>
+        <h4>Post Link</h4>
+      </header>
+      <div class="w3-container">
+        <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Title">
+        <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Link">
+      </div>
+      <footer class="w3-container w3-border-top w3-padding-8">
         <button class="w3-btn w3-right w3-green">Post</button>
       </footer>
     </div>

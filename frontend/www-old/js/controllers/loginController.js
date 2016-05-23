@@ -16,5 +16,4 @@ function loginCtrl($location, authentication) {
       $location.path('profile');
     });
   };
-
 }

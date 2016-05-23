@@ -128,7 +128,7 @@ app.post('/photos/upload', uploader.array('photo'), function (req, res, next) {
   //res.redirect('uploads/original/' + req.file.filename);
 });
 
-request.defaults({'proxy':'http://www-cache.ujf-grenoble.fr:3128'});
+//request.defaults({'proxy':'http://www-cache.ujf-grenoble.fr:3128'});
 
 app.post('/photos/uploadurl', function (req, res, next) {
   var url = req.body.url;
