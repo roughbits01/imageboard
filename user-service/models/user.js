@@ -26,12 +26,13 @@ var userSchema = new Schema({
     required: true,
     select: false
   },
+  verified: Boolean,
   /**
    * A moderator has the power to remove posts and comments from a subreddit,
    * mark posts and comments as spam, ban a user from posting, and invite
    * other users to become moderators. The user that creates the subreddit
    * is automatically assigned as the top moderator and can override
-   * any action taken by any other moderators. 
+   * any action taken by any other moderators.
    */
   role: {
     type: String,
@@ -43,6 +44,16 @@ var userSchema = new Schema({
   created: { type: Date, default: Date.now, select: false },
   updated: { type: Date, select: false },
   lastAccess: { type: Date, default: Date.now },
+  // A cache of the last time the user voted on a comment.
+  // Used to remove any comments from those 100 that are younger than the last vote
+  // (since they can't possibly have voted on them).
+  // Then look up the keys containing the remaining ones.
+  votes: {
+    positive: [ String ],// List of upvoters.
+    negative: [ String ],//	List of downvoters.
+    count: { Number, default: 0 }// An integer caching the number of votes.
+  },
+  lastVoted: { type: Date, default: Date.now },
   __v: { type: Number, select: false} // Hide version property.
 });
 

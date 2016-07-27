@@ -1,0 +1,3 @@
+Changes with imageboard 0.1.0 -- [04 Oct 2004]
+
+    *) The first public version.

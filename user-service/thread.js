@@ -9,3 +9,11 @@ exports.getAll = function(done) {
 exports.getAllByUser = function(user, done) {
   // Finds all threads by user and calls 'done(null, threads)'
 }
+
+exports.recentlyViewedThreads = function(user, done) {
+  // Finds recently viewed threads by user and calls 'done(null, threads)'
+}
+
+exports.currentViewerCount = function(thread, done) {
+  // Number of logged-in users viewing this thread in the past 15 minutes 'done(null, count)'
+}

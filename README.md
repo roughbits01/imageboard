@@ -13,6 +13,8 @@ We use message queuing (RabbitMQ) in order to pass work between components.
 
 Switching vote data into Cassandra was a huge win at reddit. Cassandra’s bloom filters enabled really fast negative lookups. For comments it’s very fast to tell which comments you didn’t vote on, so the negative answers come back quickly. (more on this topic)
 
+I would store this vote data independently of the answers data
+
 http://i.imgur.com/GoSTm9l.png
 
 https://www.owasp.org/index.php/Cheat_Sheets

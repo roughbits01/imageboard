@@ -46,17 +46,24 @@ app.get('/info', function(req, res, next) {
   //var description = null;
   var image = null;
   //var type = null;
+  var size = 0, decoded = 0;
+
+  request = request.defaults({'proxy':'http://55.1.35.226:8080'});
 
   var r = request(link, function(error, response, html) {
     //var images = html.match(/<img[^>]>([^>]+)/gi);
     //var title = html.match(/<title>(.*?)<\/title>/i)[1];
     //res.send(html);
     //res.json(title);
+    console.log('helloo');
   })
   .on('response', function(response) {
     //console.log(response.statusCode); // 200
     //console.log(response.headers['content-type']); // 'image/png'
-    console.log(response.headers['content-length']);
+    //
+    //console.log(typeof size);
+    var length = response.headers['content-length'];
+    if (length) size = parseInt(response.headers['content-length']);
     //console.log(response.headers['content-encoding']);
     //res.json();
   })
@@ -65,27 +72,29 @@ app.get('/info', function(req, res, next) {
   })
   .on('data', function(chunk) {
     // Decompressed data as it is received.
+    decoded += chunk.length;
     var data = chunk.toString('utf8');
-    console.log('decoded chunk: ' + data.length);
+    //console.log('decoded chunk: ' + data.length);
     // If we are still parsing <head></head> and we didn't yet find a title.
     if (head) {
       // Allow th author to specify the image and title using the Open Graph protocol.
-      if (!title) title = data.match(/<meta[\s]*property="(twitter|og):title"[\s]*content="(.*?)"[\s]*\/?[\s]*>/);
+      if (!title) title = data.match(/<meta.*?property="(og|twitter):title".*?content="(.*?)".*?>/);
       //if (!description) description = data.match(/<meta[\s]*property="og:description"[\s]*content="(.*?)"[\s]*\/?[\s]*>/);
-      if (!image) image = data.match(/<meta[\s]*property="(twitter|og):image"[\s]*content="(.*?)"[\s]*\/?[\s]*>/);
+      if (!image) image = data.match(/<meta.*?property="(og|twitter):image".*?content="(.*?)".*?>/);
       //if (!type) type = data.match(/<meta[\s]*property="og:type"[\s]*content="(.*?)"[\s]*\/?[\s]*>/);
       // We found what we need so it's unnecessary to continue donloading the page.
       if (title && image) {
+        console.log('Aborting [' + decoded/size + ']');
         r.abort();
         return res.json({
           hostname: hostname,
-          title: entities.decodeHTML(title[2]),
+          title: entities.decodeHTML(title[2]),//str.substr(0, str.lastIndexOf('|'))
           //description: description[1],
           image: image[2],
           //type: type[1]
         });
       }
-    } else {
+    } else { // Parsing body
       return res.json({
         hostname: hostname,
         title: title,
