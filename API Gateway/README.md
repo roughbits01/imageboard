@@ -12,7 +12,6 @@
 * Determine if HTTP request will accept a cached response, and if there's a fresh item in the cache to respond with.
 * Send HTTP request to the Origin Server if the request shouldn't be cached or if its cached item is stale.
 * Respond with HTTP responses from its cache or from the origin server as appropriate.
-It is recommended that you use cache only for frequently accessed data.
 
 ### Responsibilities of the client
 * Sending requests.
