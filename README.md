@@ -18,3 +18,5 @@ I would store this vote data independently of the answers data
 http://i.imgur.com/GoSTm9l.png
 
 https://www.owasp.org/index.php/Cheat_Sheets
+
+![architecture](http://imgur.com/UTSjZrm)
