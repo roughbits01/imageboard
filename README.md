@@ -19,4 +19,4 @@ http://i.imgur.com/GoSTm9l.png
 
 https://www.owasp.org/index.php/Cheat_Sheets
 
-![architecture](http://imgur.com/UTSjZrm)
+![architecture](http://i.imgur.com/UTSjZrm.png)
