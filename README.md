@@ -46,9 +46,16 @@ Message queues receive, hold, and deliver messages. If an operation is too slow 
 
 Asynchronous workflows help reduce request times for expensive operations that would otherwise be performed in-line. They can also help by doing time-consuming work in advance, such as periodic aggregation of data.
 
-### Redis
+### Redis (http://oldblog.antirez.com/post/take-advantage-of-redis-adding-it-to-your-stack.html)
 Leaderboards/Counting
 Redis does an amazing job at increments and decrements since it's in-memory. Sets and sorted sets also make our lives easier when trying to do these kinds of operations, and Redis just so happens to offer both of these data structures.
 
 Showing latest items listings
 Showing items in bump order
+Implement expires on items
+
+Another way to use sorted sets is to index stuff by time. We just use the unix time as score. This can be used in general to index things by time, but a notable usage is to expire things in our main database when a given amount of time has elapsed. 
+
+This is the pattern:
+Every time a new item is added to our (non Redis) database we add it into the sorted set. As score we use the time at which this item should expire, in other words the current_time+time_to_live.
+There is a background worker doing queries in the sorted set using for instance ZRANGE ... WITHSCORES to take the latest 10 items. If there are scores representing unix times already in the past, we delete this items from the database.
