@@ -1,6 +1,7 @@
 # Imageboard
 
-Imageboard architecture is a service-oriented architecture where components talk to each other using message queuing (RabbitMQ) or direct REST API calls.
+The idea behind this project is to learn how to design large-scale systems.
+Imageboard architecture is a service-oriented architecture where components talk to each other using message queuing (RabbitMQ) or direct REST API calls. Microservices can be described as a suite of independently deployable, small, modular services
 
 Service-oriented architecture advantages:
 * Easier auto-scaling because just the service that is having the problem needs to scale;
@@ -8,6 +9,7 @@ Service-oriented architecture advantages:
 * Problems can be identified more easily because they are isolated behind REST calls;
 * Effects of change are narrowed;
 * More efficient local caching.
+* The single responsibility principle advocates for small and autonomous services that work together. Small teams with small services can plan more aggressively for rapid growth.
 
 Switching vote data into Cassandra was a huge win at reddit. Cassandra’s bloom filters enabled really fast negative lookups. For comments it’s very fast to tell which comments you didn’t vote on, so the negative answers come back quickly.
 
