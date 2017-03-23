@@ -45,3 +45,7 @@ Message queues receive, hold, and deliver messages. If an operation is too slow 
 2. A worker picks up the job from the queue, processes it, then signals the job is complete
 
 Asynchronous workflows help reduce request times for expensive operations that would otherwise be performed in-line. They can also help by doing time-consuming work in advance, such as periodic aggregation of data.
+
+### Redis
+Leaderboards/Counting
+Redis does an amazing job at increments and decrements since it's in-memory. Sets and sorted sets also make our lives easier when trying to do these kinds of operations, and Redis just so happens to offer both of these data structures.
