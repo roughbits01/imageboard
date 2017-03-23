@@ -49,3 +49,6 @@ Asynchronous workflows help reduce request times for expensive operations that w
 ### Redis
 Leaderboards/Counting
 Redis does an amazing job at increments and decrements since it's in-memory. Sets and sorted sets also make our lives easier when trying to do these kinds of operations, and Redis just so happens to offer both of these data structures.
+
+Showing latest items listings
+Showing items in bump order
