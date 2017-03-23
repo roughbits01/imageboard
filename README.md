@@ -21,6 +21,27 @@ https://www.owasp.org/index.php/Cheat_Sheets
 
 ![architecture](http://i.imgur.com/UTSjZrm.png)
 
+### The API Gateway
+An API Gateway is a server that is the single entry point into the system.
+* Request Routing
+* Load Balancing
+* API Aggregation
+* Webserver Caching and Microcaching
+* SSL Termination
+* Access Control
+
+The API Gateway validates the JSON Web Token (JWT) before passing the request to the API endpoints.
+* Request Limiting
+* Protocol Translation
+
 ### The Service Registry
 In a microservices application, the set of running service instances changes dynamically. Instances have dynamically assigned network locations. Consequently, in order for a client to make a request to a service it must use a service‑discovery mechanism.
 The service registry is a key part of service discovery. It is a database containing the network locations of service instances. A service registry should provide a REST API for registering and querying service instances. A service instance registers its network location using a POST request. Every 30 seconds it must refresh its registration using a PUT request. A registration is removed by either using an HTTP DELETE request or by the instance registration timing out. As you might expect, a client can retrieve the registered service instances by using an HTTP GET request.
+
+### Message Queuing
+Message queues receive, hold, and deliver messages. If an operation is too slow to perform inline, you can use a message queue with the following workflow:
+
+1. An application publishes a job to the queue, then notifies the user of job status
+2. A worker picks up the job from the queue, processes it, then signals the job is complete
+
+Asynchronous workflows help reduce request times for expensive operations that would otherwise be performed in-line. They can also help by doing time-consuming work in advance, such as periodic aggregation of data.
