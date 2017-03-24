@@ -42,7 +42,7 @@ app.use(function(req, res, next) {// Allow cors
 app.get('/photos', function(req, res, next) {
   fs.readdir('uploads/thumbnail/small', (err, data) => {
     if (err) throw err;
-    var images = data.map(e => '/uploads/thumbnail/big/' + e);
+    var images = data.map(e => '/uploads/thumbnail/small/' + e);
     res.json(images);
   });
 });

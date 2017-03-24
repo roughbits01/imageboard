@@ -1,10 +1,10 @@
 <div ng-if="!list" class="w3-container">
-  <!--<div class="w3-container w3-padding-16 w3-light-grey">
+  <div class="w3-container w3-padding-16 w3-light-grey">
     <div ng-repeat="p in pinned" class="w3-display-container w3-card-8 w3-right w3-hover-opacity w3-animate-zoom">
       <img ng-src="{{p}}" class=" " style="width:100px; cursor:pointer;">
       <span ng-click="unpin($index)" class="w3-display-topright w3-closebtn w3-hover-text-red">×</span>
     </div>
-  </div>-->
+  </div>
   <div ng-repeat="r in images.length / 6 | range" class="w3-row-padding w3-margin-top">
     <div ng-repeat="c in 6 | range" ng-if="r * 6 + c < images.length" class="w3-col s2 m2 l2">
       <div class="w3-card-2">
@@ -46,22 +46,30 @@
         <span class="w3-large w3-right fa fa-th" style="cursor:pointer;"><span>
       </a>
     </div>-->
+    <div style="height: 40px; padding: 8px; border-bottom: 1px solid #eaeaea;">
+      Explore Latest Posts
+      <span class="w3-right" style="color: #999;">hot</span>
+      <span class="w3-right w3-margin-right" style="color: #999;">latest</span>
+      <span class="w3-right w3-margin-right" style="color: #999;">top</span>
+    </div>
     <div ng-if="list" class="w3-container">
-      <ul class="w3-ul w3-white">
+      <ul class="w3-ul">
         <li ng-repeat="image in images" class="w3-padding-16">
           <div class="w3-row">
-            <div class="w3-col w3-padding-8" style="width:128px">
+            <div class="w3-col" style="width:40px">
+              <span title="upvote" class="fa fa-chevron-up fa-2x action upvote"></span>
+              <span title="downvote" class="fa fa-chevron-down fa-2x action downvote"></span>
+            </div>
+            <div class="w3-col w3-padding-8" style="width:64px">
               <a href="#threads/dfdfdf">
                 <img ng-src="{{image.image}}" alt="Image" class="w3-margin-right" style="width:100%">
               </a>
             </div>
             <div class="w3-rest w3-padding-small w3-small">
-              <span class="w3-right">#{{$index + 1}}</span>
-              <span class="w3-large">Lorem</span><br>
-              <span>Sed mattis nunc</span><br>
-              <span style="color: #999;">{{image.votes}} points · {{image.comments}} comments</span><br>
-              <span title="upvote" class="fa fa-chevron-up fa-2x action upvote"></span>
-              <span title="downvote" class="fa fa-chevron-down fa-2x action downvote"></span>
+              <span class="w3-right" style="color: #999;">#{{$index + 1}}</span>
+              <span class="w3-large" style="color: #34495e;">Lorem: Sed mattis nunc </span><span style="color: #999;">(github.com)</span><br>
+              <span style="color: #999;">by <a href="#users/roughbits01">roughbits01</a> 13 hours ago | {{image.votes}} points | <a href="#threads/dfdfdf">{{image.comments}} comments</a> | </span>
+              <span title="report" class="fa fa-flag fa-x action report" onclick="document.getElementById('id00').style.display='block'"></span>
             </div>
           </div>
         </li>
@@ -72,7 +80,7 @@
     <div class="w3-container w3-padding-top w3-animate-opacity">
       <div class="w3-display-container">
         <span onclick="this.parentElement.style.display='none'" class="w3-display-topright w3-closebtn w3-padding-small w3-large w3-text-white">×</span>
-        <img src="/uploads/original/6fae88f0814635fa72d5f6598e9d72af.png" alt="" style="width:100%">
+        <img src="https://ressources.blogdumoderateur.com/2015/08/reddit-logo-600x200.png" alt="" style="width:100%">
       </div>
     </div>
     <div class="w3-container">

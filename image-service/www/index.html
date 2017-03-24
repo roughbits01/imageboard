@@ -3,27 +3,29 @@
 <head>
   <title>My Web</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="www/w3.css">
+  <link rel="stylesheet" href="www/w3.min.css">
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="www/index.css">
 </head>
 <body ng-app="myApp" ng-cloak>
   <!-- Navbar -->
   <div class="w3-top">
-    <ul class="w3-navbar w3-padding-8 w3-black">
-      <li><a href="#/"><i class="fa fa-home w3-large"></i></a></li>
-      <li><a href="#boards">Boards</a></li>
-      <li class="w3-right">
-        <button class="w3-btn w3-margin-right w3-green w3-hover-opacity" onclick="document.getElementById('id04').style.display='block'">
-          <i class="fa fa-plus"></i> Post Link
+    <ul class="w3-navbar w3-padding-8 w3-white" style="box-shadow: 0 0 1px rgba(0,0,0,0.25);">
+      <!--<li><a href="#/"><i class="fa fa-home w3-large"></i></a></li> -->
+      <li class="w3-margin-left w3-margin-right"><a href="#boards">Boards</a></li>
+      <li class="w3-margin-right">
+        <input name="q" type="text" class="w3-input w3-border w3-round w3-light-grey w3-animate-input" style="width:70%" tabindex="1" maxlength="240" autocomplete="off" spellcheck="false" placeholder="Search posts...">
+      </li>
+      <li class="w3-right w3-margin-right">
+        <button class="w3-btn w3-ripple w3-green" style="margin:0;padding:0;font-weight:700;">
+          <img height="38" width="38" src="uploads/me.png" alt="Marwen Azouzi (marwenazouzi)" title="Marwen Azouzi (marwenazouzi)">
         </button>
       </li>
-      <!--<li class="w3-right">
-        <div>
-          <input class="w3-input w3-animate-input" style="width:30%" type="text" autocomplete="off" spellcheck="false" placeholder="Search posts...">
-          <button class="w3-btn w3-blue w3-hover-"><i class="fa fa-search"></i></button>
-        </div>
-      </li>-->
+      <li class="w3-right w3-margin-right">
+        <button class="w3-btn w3-green w3-hover-opacity" onclick="document.getElementById('id04').style.display='block'">
+          <i class="fa fa-pencil" title="Post Link"></i> Post Link
+        </button>
+      </li>
     </ul>
   </div>
   <!-- Modal -->
@@ -143,7 +145,7 @@
     <a class="w3-padding" href="javascript:void(0)">Contact</a>
     <a class="w3-padding" href="javascript:void(0)">Support</a>
   </nav>-->
-  <div ng-view class="w3-animate-left" style="margin-top:54px;">
+  <div ng-view class="w3-animate-left" style="margin-top:80px;">
 
   </div>
   <script src="bower_components/angular/angular.min.js"></script>
